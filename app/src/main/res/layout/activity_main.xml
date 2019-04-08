@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/rssFeedBtn"
+        android:id="@+id/rssFeedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -19,11 +19,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_toStartOf="@id/rssFeedBtn"
+        android:layout_toStartOf="@id/rssFeedButton"
         android:hint="@string/text_input_layout_hint">
 
         <EditText
-            android:id="@+id/rssFeedEditText"
+            android:id="@+id/rssFeedLinkEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
