@@ -21,15 +21,14 @@ import java.util.concurrent.Executors;
 public class FetchFeedService extends Service {
 
     private static final String TAG = "FetchFeedService";
-    private String urlLink; // ссылка на новостную ленту
     private ExecutorService executorService;
 
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        urlLink = intent.getStringExtra(MainActivity.FEED_URL);
+        String url = intent.getStringExtra(MainActivity.FEED_URL);
         executorService = Executors.newFixedThreadPool(1);
-        FetchFeedRun feedRun = new FetchFeedRun(startId);
-        executorService.execute(feedRun);
+        FetchFeedRun fetchFeedRun = new FetchFeedRun(startId, url);
+        executorService.execute(fetchFeedRun);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -41,16 +40,26 @@ public class FetchFeedService extends Service {
 
     class FetchFeedRun implements Runnable {
 
+        String urlLink;
         int startId;
-        private List<RssFeedModel> feedModelList;
+        List<RssFeedModel> feedModelList;
 
-        public FetchFeedRun(int startId) {
+        public FetchFeedRun(int startId, String urlLink) {
             this.startId = startId;
+            this.urlLink = urlLink;
         }
         @Override
         public void run() {
 
-            fetchFeedTask();
+            Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
+            if (fetchFeedTask()) {
+                intent.putExtra(MainActivity.STATUS, MainActivity.SUCCESS);
+                sendBroadcast(intent);
+            }
+            else {
+                intent.putExtra(MainActivity.STATUS, MainActivity.FAILURE);
+                sendBroadcast(intent);
+            }
             stop(startId);
         }
 
