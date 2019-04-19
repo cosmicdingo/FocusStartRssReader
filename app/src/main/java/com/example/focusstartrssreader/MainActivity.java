@@ -14,16 +14,17 @@ import android.widget.Button;
 import android.widget.EditText;
 //import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
 
     public static final String FEED_URL = "feedUrl";
     public static final String STATUS = "status";
-    public final static String BROADCAST_ACTION = "com.example.focusstartrssreader";
+    public static final String BROADCAST_ACTION = "com.example.focusstartrssreader";
 
-    public final static int SUCCESS = 100;
-    public final static int FAILURE = 200;
+    public static final int SUCCESS = 100;
+    public static final int FAILURE = 200;
 
 
     private RecyclerView recyclerView;
@@ -38,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        //recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         rssFeedLinkEditText = (EditText) findViewById(R.id.rssFeedLinkEditText);
         rssFeedButton = (Button) findViewById(R.id.rssFeedButton);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 else if (status == FAILURE) {
                     Toast.makeText(MainActivity.this, "Invalid rss feed url", Toast.LENGTH_LONG).show();
                 }
-                swipeRefreshLayout.setRefreshing(false);
+                //swipeRefreshLayout.setRefreshing(false);
             }
         };
 
@@ -73,12 +74,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onClickFetch(View view) {
-        swipeRefreshLayout.setRefreshing(true);
+        //swipeRefreshLayout.setRefreshing(true);
 
         // Создаем Intent для вызова сервиса
         Intent intent = new Intent(this, FetchFeedService.class);
         // кладем в intent ссылку на новостную ленту
         intent.putExtra(FEED_URL, rssFeedLinkEditText.getText().toString());
+        Log.d("MainActivity", "rss link: " + rssFeedLinkEditText.getText().toString());
         startService(intent);
     }
 }
