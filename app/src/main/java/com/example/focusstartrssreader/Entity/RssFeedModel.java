@@ -1,8 +1,15 @@
-package com.example.focusstartrssreader;
+package com.example.focusstartrssreader.Entity;
+
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 // Вспомогательный класс, содержащий заголовок, описание,
 // и ссылку элемента новостной ленты
+@Entity
 public class RssFeedModel {
+
+    @PrimaryKey(autoGenerate = true)
+    private long id;
 
     private String title;
     private String link;
@@ -14,6 +21,10 @@ public class RssFeedModel {
         this.link = link;
         this.description = description;
         this.pubDate = pubDate;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getTitle() {

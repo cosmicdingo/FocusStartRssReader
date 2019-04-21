@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 
 import com.example.focusstartrssreader.MainActivity;
-import com.example.focusstartrssreader.RssFeedParser;
+import com.example.focusstartrssreader.parser.RssFeedParser;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

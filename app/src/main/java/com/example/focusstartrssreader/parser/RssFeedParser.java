@@ -1,7 +1,9 @@
-package com.example.focusstartrssreader;
+package com.example.focusstartrssreader.parser;
 
 import android.util.Log;
 import android.util.Xml;
+
+import com.example.focusstartrssreader.Entity.RssFeedModel;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -99,6 +101,7 @@ public class RssFeedParser {
                 if (title != null && link != null && description != null && pubDate != null) {
                     if (isItem) {
                         RssFeedModel item = new RssFeedModel(title, link, description, pubDate);
+
                         items.add(item);
                     }
                     title = null;
