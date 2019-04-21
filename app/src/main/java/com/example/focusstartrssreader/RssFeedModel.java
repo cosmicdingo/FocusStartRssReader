@@ -7,11 +7,13 @@ public class RssFeedModel {
     private String title;
     private String link;
     private String description;
+    private String pubDate;
 
-    public RssFeedModel(String title, String link, String description) {
+    public RssFeedModel(String title, String link, String description, String pubDate) {
         this.title = title;
         this.link = link;
         this.description = description;
+        this.pubDate = pubDate;
     }
 
     public String getTitle() {
@@ -24,5 +26,9 @@ public class RssFeedModel {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getPubDate() {
+        return pubDate;
     }
 }

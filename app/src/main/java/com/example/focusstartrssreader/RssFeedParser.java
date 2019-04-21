@@ -17,6 +17,8 @@ import java.util.List;
 
 public class RssFeedParser {
 
+    private static final String TAG = "RssFeedParser";
+
     private static final String XML_PULL_PARSER_EXCEPTION = "XmlPullParserException";
     private static final String MALFORMED_URL_EXCEPTION = "MalformedUrlException";
     private static final String IO_EXCEPTION = "IOException";
@@ -36,6 +38,7 @@ public class RssFeedParser {
         String title = null;
         String link = null;
         String description = null;
+        String pubDate = null;
         boolean isItem = false;
         List<RssFeedModel> items = new ArrayList<>();
 
@@ -88,17 +91,20 @@ public class RssFeedParser {
                 } else if (name.equalsIgnoreCase("link")) {
                     link = result;
                 } else if (name.equalsIgnoreCase("description")) {
-                    description = result;
+                    description = result.replaceAll("\\<.*?\\>", "").replaceAll("\n", " ");
+                } else if (name.equalsIgnoreCase("pubDate")) {
+                    pubDate = result;
                 }
 
-                if (title != null && link != null && description != null) {
+                if (title != null && link != null && description != null && pubDate != null) {
                     if (isItem) {
-                        RssFeedModel item = new RssFeedModel(title, link, description);
+                        RssFeedModel item = new RssFeedModel(title, link, description, pubDate);
                         items.add(item);
                     }
                     title = null;
                     link = null;
                     description = null;
+                    pubDate = null;
                     isItem = false;
                 }
             }
@@ -128,7 +134,11 @@ public class RssFeedParser {
             int response = httpConn.getResponseCode(); // код ответа от сервера
             if (response == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = httpConn.getInputStream();
-                parseFeed(inputStream);
+                List<RssFeedModel> rssFeedModelList = parseFeed(inputStream);
+                for (RssFeedModel rssFeedModel : rssFeedModelList) {
+                    Log.d(TAG, "\nnew feed: ");
+                    Log.d(TAG, "\ntitle: " + rssFeedModel.getTitle() + "\n link: " + rssFeedModel.getLink() + "\n description: " + rssFeedModel.getDescription() + "\n pubDate: " + rssFeedModel.getPubDate());
+                }
                 wasDoParsing = true; // ислючений нет, парсинг прошел успешно
             }
         }
@@ -143,8 +153,8 @@ public class RssFeedParser {
         }
         finally {
             httpConn.disconnect();
-            return wasDoParsing;
         }
+        return wasDoParsing;
     }
 
 }

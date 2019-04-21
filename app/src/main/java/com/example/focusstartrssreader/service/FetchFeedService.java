@@ -1,10 +1,13 @@
-package com.example.focusstartrssreader;
+package com.example.focusstartrssreader.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.example.focusstartrssreader.MainActivity;
+import com.example.focusstartrssreader.RssFeedParser;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
