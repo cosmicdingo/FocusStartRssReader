@@ -3,10 +3,9 @@ package com.example.focusstartrssreader.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.text.TextUtils;
 
 import com.example.focusstartrssreader.MainActivity;
-import com.example.focusstartrssreader.parser.RssFeedParser;
+import com.example.focusstartrssreader.storage.FeedRepositoryImpl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,9 +17,9 @@ public class FetchFeedService extends Service {
 
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        String url = intent.getStringExtra(MainActivity.FEED_URL);
+        String urlLink = intent.getStringExtra(MainActivity.FEED_URL);
         executorService = Executors.newFixedThreadPool(1);
-        FetchFeedRun fetchFeedRun = new FetchFeedRun(startId, url);
+        FetchFeedRun fetchFeedRun = new FetchFeedRun(startId, urlLink);
         executorService.execute(fetchFeedRun);
         return super.onStartCommand(intent, flags, startId);
     }
@@ -39,30 +38,16 @@ public class FetchFeedService extends Service {
             this.startId = startId;
             this.urlLink = urlLink;
         }
+
         @Override
         public void run() {
 
-            Intent intent = new Intent(MainActivity.BROADCAST_ACTION);
-            if (fetchFeedTask()) {
-                intent.putExtra(MainActivity.STATUS, MainActivity.SUCCESS);
-                sendBroadcast(intent);
-            }
-            else {
-                intent.putExtra(MainActivity.STATUS, MainActivity.FAILURE);
-                sendBroadcast(intent);
-            }
+            // выполняем подключение к интернету,
+            // записываем данные в бд
+            new FeedRepositoryImpl().uploadData(urlLink);
             stop(startId);
         }
 
-        boolean fetchFeedTask () {
-            if(TextUtils.isEmpty(urlLink))
-                return false;
-            else {
-                if(new RssFeedParser(urlLink).fetchFeed())
-                    return true;
-                else return false;
-            }
-        }
         void stop(int startId) {
             stopSelf(startId);
         }

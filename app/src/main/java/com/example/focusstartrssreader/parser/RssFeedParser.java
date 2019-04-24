@@ -3,30 +3,22 @@ package com.example.focusstartrssreader.parser;
 import android.util.Log;
 import android.util.Xml;
 
-import com.example.focusstartrssreader.Entity.RssFeedModel;
+import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RssFeedParser {
 
-    private static final String TAG = "RssFeedParser";
 
     private static final String XML_PULL_PARSER_EXCEPTION = "XmlPullParserException";
-    private static final String MALFORMED_URL_EXCEPTION = "MalformedUrlException";
-    private static final String IO_EXCEPTION = "IOException";
 
     private String urlString;
-
 
     public RssFeedParser(String urlString) {
         if(!urlString.startsWith("http://") && !urlString.startsWith("https://"))
@@ -35,7 +27,7 @@ public class RssFeedParser {
     }
 
     //Парсинг RSS ленты
-    List<RssFeedModel> parseFeed(InputStream inputStream) throws XmlPullParserException, IOException {
+    public List<RssFeedModel> parseFeed(InputStream inputStream) throws IOException {
 
         String title = null;
         String link = null;
@@ -101,7 +93,6 @@ public class RssFeedParser {
                 if (title != null && link != null && description != null && pubDate != null) {
                     if (isItem) {
                         RssFeedModel item = new RssFeedModel(title, link, description, pubDate);
-
                         items.add(item);
                     }
                     title = null;
@@ -111,53 +102,13 @@ public class RssFeedParser {
                     isItem = false;
                 }
             }
-            return items;
-        }
-        finally {
-            inputStream.close();
-        }
-    }
-
-    // используем HttpURLConnection объект, чтобы открыть HTTP соединение с помощью URL
-    public boolean fetchFeed() {
-
-        boolean wasDoParsing = false; // флаг, сигнализирующий о том, успешно ли бы произведен парсинг
-        HttpURLConnection httpConn = null;
-
-        try {
-            URL url = new URL(urlString);
-            URLConnection conn = url.openConnection();
-
-            if (!(conn instanceof HttpURLConnection))
-                throw new IOException("Not an HTTP connection");
-
-            httpConn = (HttpURLConnection) conn;
-            httpConn.setRequestMethod("GET");
-            httpConn.connect(); // попытка соединения с сервером
-            int response = httpConn.getResponseCode(); // код ответа от сервера
-            if (response == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = httpConn.getInputStream();
-                List<RssFeedModel> rssFeedModelList = parseFeed(inputStream);
-                for (RssFeedModel rssFeedModel : rssFeedModelList) {
-                    Log.d(TAG, "\nnew feed: ");
-                    Log.d(TAG, "\ntitle: " + rssFeedModel.getTitle() + "\n link: " + rssFeedModel.getLink() + "\n description: " + rssFeedModel.getDescription() + "\n pubDate: " + rssFeedModel.getPubDate());
-                }
-                wasDoParsing = true; // ислючений нет, парсинг прошел успешно
-            }
-        }
-        catch (MalformedURLException ex) {
-            Log.d(MALFORMED_URL_EXCEPTION, ex.getMessage());
-        }
-        catch (IOException ex) {
-            Log.d(IO_EXCEPTION, ex.getMessage());
         }
         catch (XmlPullParserException ex) {
             Log.d(XML_PULL_PARSER_EXCEPTION, ex.getMessage());
         }
         finally {
-            httpConn.disconnect();
+            inputStream.close();
         }
-        return wasDoParsing;
+        return items;
     }
-
 }

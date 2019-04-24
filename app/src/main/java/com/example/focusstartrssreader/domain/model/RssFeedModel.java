@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.Entity;
+package com.example.focusstartrssreader.domain.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
