@@ -2,7 +2,6 @@ package com.example.focusstartrssreader.storage;
 
 import android.util.Log;
 
-import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 import com.example.focusstartrssreader.domain.repository.FeedRepository;
 import com.example.focusstartrssreader.network.NetworkConnection;
@@ -14,21 +13,27 @@ import java.util.List;
 
 public class FeedRepositoryImpl implements FeedRepository {
 
-
     private static final String IO_EXCEPTION = "IOException";
+
+    private NetworkConnection connection;
+    private RssFeedParser parser;
+    private RssFeedDatabase database;
+
+    public FeedRepositoryImpl(NetworkConnection connection, RssFeedParser parser, RssFeedDatabase database) {
+        this.connection = connection;
+        this.parser = parser;
+        this.database = database;
+    }
 
     @Override
     public void uploadData(String urlString) {
 
-        InputStream is = NetworkConnection.getInputStream(urlString);
+        InputStream is = connection.getInputStream(urlString);
         if(is != null) {
 
             try {
-                RssFeedParser parser = new RssFeedParser(urlString);
+                // парсим ленту
                 List<RssFeedModel> rssFeedModelList = parser.parseFeed(is);
-
-                // получаем базу данных
-                RssFeedDatabase database = RssFeedApp.getInstance().getDatabase();
 
                 // Из Database объекта получаем Dao
                 RssFeedModelDao feedModelDao = database.rssFeedModelDao();

@@ -3,6 +3,10 @@ package com.example.focusstartrssreader;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
+import com.example.focusstartrssreader.domain.repository.FeedRepository;
+import com.example.focusstartrssreader.network.NetworkConnection;
+import com.example.focusstartrssreader.parser.RssFeedParser;
+import com.example.focusstartrssreader.storage.FeedRepositoryImpl;
 import com.example.focusstartrssreader.storage.RssFeedDatabase;
 
 // Application класс предназначен для создания
@@ -13,20 +17,25 @@ public class RssFeedApp extends Application {
 
     public static RssFeedApp instance;
 
-    private RssFeedDatabase database;
+    private FeedRepositoryImpl repository;
 
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
-        database = Room.databaseBuilder(this, RssFeedDatabase.class, "RssFeedDatabase").build();
+
+        NetworkConnection connection = new NetworkConnection();
+        RssFeedParser parser = new RssFeedParser();
+        RssFeedDatabase database = Room.databaseBuilder(this, RssFeedDatabase.class, "RssFeedDatabase").build();
+
+        repository = new FeedRepositoryImpl(connection, parser, database);
     }
 
     public static RssFeedApp getInstance() {
         return instance;
     }
 
-    public RssFeedDatabase getDatabase() {
-        return database;
+    public FeedRepository getFeedRepository() {
+        return repository;
     }
 }

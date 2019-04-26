@@ -14,7 +14,10 @@ public class NetworkConnection {
     private static final String MALFORMED_URL_EXCEPTION = "MalformedUrlException";
     private static final String IO_EXCEPTION = "IOException";
 
-    public static InputStream getInputStream(String urlString) {
+    public InputStream getInputStream(String urlString) {
+
+        if(!urlString.startsWith("http://") && !urlString.startsWith("https://"))
+            urlString = "http://" + urlString;
 
         HttpURLConnection httpConn = null;
         InputStream inputStream = null;

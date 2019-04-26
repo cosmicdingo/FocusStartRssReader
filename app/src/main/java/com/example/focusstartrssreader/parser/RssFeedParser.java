@@ -15,16 +15,7 @@ import java.util.List;
 
 public class RssFeedParser {
 
-
     private static final String XML_PULL_PARSER_EXCEPTION = "XmlPullParserException";
-
-    private String urlString;
-
-    public RssFeedParser(String urlString) {
-        if(!urlString.startsWith("http://") && !urlString.startsWith("https://"))
-            urlString = "http://" + urlString;
-        this.urlString = urlString;
-    }
 
     //Парсинг RSS ленты
     public List<RssFeedModel> parseFeed(InputStream inputStream) throws IOException {

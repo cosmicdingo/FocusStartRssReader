@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.example.focusstartrssreader.MainActivity;
-import com.example.focusstartrssreader.storage.FeedRepositoryImpl;
+import com.example.focusstartrssreader.RssFeedApp;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,9 +42,10 @@ public class FetchFeedService extends Service {
         @Override
         public void run() {
 
-            // выполняем подключение к интернету,
+            // из application класса получает объект репозитория
+            // в методе uploadData() выполняем подключение к интернету,
             // записываем данные в бд
-            new FeedRepositoryImpl().uploadData(urlLink);
+            RssFeedApp.getInstance().getFeedRepository().uploadData(urlLink);
             stop(startId);
         }
 
