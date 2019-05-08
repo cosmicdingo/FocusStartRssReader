@@ -82,6 +82,7 @@ public class RssFeedParser {
                 }
 
                 if (title != null && link != null && description != null && pubDate != null) {
+
                     if (isItem) {
                         RssFeedModel item = new RssFeedModel(title, link, description, pubDate);
                         items.add(item);
@@ -101,5 +102,31 @@ public class RssFeedParser {
             inputStream.close();
         }
         return items;
+    }
+
+    public String parseFeedTitle(InputStream inputStream) throws IOException{
+
+        String feedTitle = null;
+
+        try {
+            XmlPullParser xmlPullParser = Xml.newPullParser();
+            xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            xmlPullParser.setInput(inputStream, null);
+
+            boolean flag = true;
+            while ( flag ) {
+                xmlPullParser.next();
+                if (xmlPullParser.getEventType() == XmlPullParser.START_TAG && xmlPullParser.getName().equals("title")) {
+                    feedTitle = xmlPullParser.nextText();
+                    flag = false;
+                }
+            }
+        } catch (XmlPullParserException ex) {
+            Log.d(XML_PULL_PARSER_EXCEPTION, ex.getMessage());
+        }
+        finally {
+            inputStream.close();
+        }
+        return feedTitle;
     }
 }

@@ -8,6 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class RssFeedModel {
 
+
     @PrimaryKey(autoGenerate = true)
     private long id;
 
@@ -25,6 +26,10 @@ public class RssFeedModel {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {

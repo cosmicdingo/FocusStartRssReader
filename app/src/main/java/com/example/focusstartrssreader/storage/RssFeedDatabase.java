@@ -7,7 +7,7 @@ import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
 // В классе описываем абстрактные методы для получения
 // Dao объектов, которые нам понадобятся
-@Database(entities = {RssFeedModel.class}, version = 1)
+@Database(entities = {RssFeedModel.class}, version = 1, exportSchema = false)
 public abstract class RssFeedDatabase extends RoomDatabase {
     public abstract RssFeedModelDao rssFeedModelDao();
 }

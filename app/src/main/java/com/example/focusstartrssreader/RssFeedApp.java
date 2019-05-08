@@ -35,7 +35,7 @@ public class RssFeedApp extends Application {
         return instance;
     }
 
-    public FeedRepository getFeedRepository() {
+    public FeedRepositoryImpl getFeedRepository() {
         return repository;
     }
 }

@@ -14,13 +14,13 @@ public class NetworkConnection {
     private static final String MALFORMED_URL_EXCEPTION = "MalformedUrlException";
     private static final String IO_EXCEPTION = "IOException";
 
-    public InputStream getInputStream(String urlString) {
+    public HttpURLConnection getHttpConnection(String urlString) {
 
         if(!urlString.startsWith("http://") && !urlString.startsWith("https://"))
             urlString = "http://" + urlString;
 
         HttpURLConnection httpConn = null;
-        InputStream inputStream = null;
+        //InputStream inputStream = null;
 
         try {
             URL url = new URL(urlString);
@@ -31,11 +31,12 @@ public class NetworkConnection {
 
             httpConn = (HttpURLConnection) conn;
             httpConn.setRequestMethod("GET");
-            httpConn.connect(); // попытка соединения с сервером
+            /*httpConn.connect(); // попытка соединения с сервером
             int response = httpConn.getResponseCode(); // код ответа от сервера
             if (response == HttpURLConnection.HTTP_OK) {
-                inputStream = httpConn.getInputStream();
-            }
+                return httpConn;
+                //inputStream = httpConn.getInputStream();
+            }*/
         }
         catch (MalformedURLException ex) {
             Log.d(MALFORMED_URL_EXCEPTION, ex.getMessage());
@@ -43,9 +44,11 @@ public class NetworkConnection {
         catch (IOException ex) {
             Log.d(IO_EXCEPTION, ex.getMessage());
         }
-        finally {
+        /*finally {
             httpConn.disconnect();
-        }
-        return inputStream;
+        }*/
+        Log.d("getInputStream", "on getInputStream");
+        //return inputStream;
+        return httpConn;
     }
 }
