@@ -1,8 +1,12 @@
 <resources>
-    <string name="app_name">FocusStartRssReader</string>
+    <string name="app_name">Rss Reader</string>
+    <string name="add_activity">Add</string>
+    <string name="add_action_title"></string>
+    <string name="add_settings_title"></string>
+    <string name="settings_activity">Settings</string>
     <string name="rss_feed_btn">Fetch</string>
     <string name="text_input_layout_hint">Rss feed source</string>
     <string name="feed_title">Feed title: </string>
-    <string name="feed_descriptioin">Feed description: </string>
+    <string name="feed_description">Feed description: </string>
     <string name="feed_link">Feed link: </string>
 </resources>
