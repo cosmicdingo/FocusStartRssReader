@@ -3,7 +3,7 @@ package com.example.focusstartrssreader.handler;
 import android.os.Handler;
 import android.os.Message;
 
-import com.example.focusstartrssreader.RssFeedAdapter;
+import com.example.focusstartrssreader.UI.adapters.RssFeedAdapter;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.storage.FeedRepositoryImpl;
 

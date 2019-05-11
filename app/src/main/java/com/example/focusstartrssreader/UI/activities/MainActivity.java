@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.activities;
+package com.example.focusstartrssreader.UI.activities;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.handler.GetFeedFromDBHandler;
@@ -62,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // запускам активити добавления rss-канала
             case R.id.action_add_feed:
-                startActivityForResult(new Intent(this, AddActivity.class),1);
+                //startActivityForResult(new Intent(this, AddActivity.class),1);
+                startActivity(new Intent(this, AddActivity.class));
                 return true;
             // настройки приложения
             case R.id.action_settings_feed:

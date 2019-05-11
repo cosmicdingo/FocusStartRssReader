@@ -7,6 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.example.focusstartrssreader.domain.model.Channel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
 import java.util.List;

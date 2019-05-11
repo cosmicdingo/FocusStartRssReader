@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.activities;
+package com.example.focusstartrssreader.UI.activities;
 
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;

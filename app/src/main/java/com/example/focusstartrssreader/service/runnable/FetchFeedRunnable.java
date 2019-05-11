@@ -5,30 +5,33 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.focusstartrssreader.RssFeedApp;
-import com.example.focusstartrssreader.activities.AddActivity;
+import com.example.focusstartrssreader.UI.activities.AddNewFeedActivity;
 
 public class FetchFeedRunnable implements Runnable {
 
+    public final static String TAG = "FetchFeedRunnable";
+
     private Context context;
     private Intent intent;
+    private String title;
     private String urlLink;
 
-    public FetchFeedRunnable(Context context, Intent intent, String urlLink) {
+    public FetchFeedRunnable(Context context, Intent intent, String title, String urlLink) {
         this.context = context;
         this.intent = intent;
+        this.title = title;
         this.urlLink = urlLink;
     }
     @Override
     public void run() {
 
-        Log.d(AddActivity.TAG, "FetchFeedRunnable");
+        Log.d(TAG, "FetchFeedRunnable");
         // из application класса получает объект репозитория
-        // в методе getFeedTitle выполняем подключение к интернету,
-        // возращаем загловок ленты
-        boolean success = RssFeedApp.getInstance().getFeedRepository().uploadData(urlLink);
+        // добавляем канал и новостную ленту канала в бд
+        boolean success = RssFeedApp.getInstance().getFeedRepository().uploadData(title, urlLink);
 
-        Intent broadcastIntent = new Intent(AddActivity.BROADCAST_FETCH_FEED_ACTION);
-        broadcastIntent.putExtra(AddActivity.FETCH_FEED_SUCCESS_TAG, success);
+        Intent broadcastIntent = new Intent(AddNewFeedActivity.BROADCAST_FETCH_FEED_ACTION);
+        broadcastIntent.putExtra(AddNewFeedActivity.FETCH_FEED_SUCCESS_TAG, success);
         // оповещаем AddActivity
         context.sendBroadcast(broadcastIntent);
         stop();

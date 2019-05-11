@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader;
+package com.example.focusstartrssreader.UI.adapters;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.focusstartrssreader.UI.activities.FeedDetailActivity;
+import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
     @Override
     public RssFeedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        // LayoutInflator преобразует макет в CardView
+        // LayoutInflater преобразует макет в CardView
         CardView cardView = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cardview_item, viewGroup, false);
         return new ViewHolder(cardView);
     }

@@ -9,4 +9,11 @@
     <string name="feed_title">Feed title: </string>
     <string name="feed_description">Feed description: </string>
     <string name="feed_link">Feed link: </string>
+    <string name="auto_back_sync">Auto background sync</string>
+
+    <string name="fragment_channels_title">Channels</string>
+    <string name="fragment_add_new_channel_title">Website</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

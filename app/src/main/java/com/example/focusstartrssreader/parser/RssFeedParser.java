@@ -38,7 +38,7 @@ public class RssFeedParser {
             // nextTag() вызывает next() и возвращает элемент,
             // если это START_TAG или END_TAG, иначе вызывает исключение
             // next() возвращает след элемент
-            xmlPullParser.nextTag();
+            //xmlPullParser.nextTag();
 
             while (xmlPullParser.next() != xmlPullParser.END_DOCUMENT) {
                 // получаем тип текущего элемента (START_TAG, END_TAG, TEXT)

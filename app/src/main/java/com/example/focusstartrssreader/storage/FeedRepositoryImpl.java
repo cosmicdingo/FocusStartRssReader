@@ -1,7 +1,9 @@
 package com.example.focusstartrssreader.storage;
 
+import android.arch.lifecycle.LiveData;
 import android.util.Log;
 
+import com.example.focusstartrssreader.domain.model.Channel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 import com.example.focusstartrssreader.domain.repository.FeedRepository;
 import com.example.focusstartrssreader.network.NetworkConnection;
@@ -52,7 +54,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     @Override
-    public boolean uploadData(String urlString) {
+    public boolean uploadData(String title, String urlString) {
 
         boolean connIsEstablished = false;
 
@@ -77,6 +79,8 @@ public class FeedRepositoryImpl implements FeedRepository {
 
                 // соединение было установлено, данные добавлены в бд
                 connIsEstablished = true;
+                // добавляем канал в бд
+                insertChannelInDatabase(title, urlString);
 
                 List<RssFeedModel> rssFeedModelList = database.rssFeedModelDao().getAll();
                 for (RssFeedModel feedModel : rssFeedModelList)
@@ -109,11 +113,27 @@ public class FeedRepositoryImpl implements FeedRepository {
        return rssFeedModels;
     }
 
+    // добавляем канал в бд
+    private void insertChannelInDatabase(String title, String urlString) {
+        // создаем объект канала
+        Channel channel = new Channel(title, urlString);
+        // Из Database объекта получаем RssFeedChannelDao
+        RssFeedChannelDao channelDao = database.rssFeedChannelDao();
+        // записываем канал в бд
+        channelDao.insertChannel(channel);
+    }
+
     private void setResult(List<RssFeedModel> rssFeedModels) {
         this.rssFeedModels = rssFeedModels;
     }
 
     public List<RssFeedModel> getRssFeedModels() {
         return rssFeedModels;
+    }
+
+    public LiveData<List<Channel>> getRssFeedChannels() {
+        // Из Database объекта получаем RssFeedChannelDao
+        RssFeedChannelDao channelDao = database.rssFeedChannelDao();
+        return channelDao.getAll();
     }
 }

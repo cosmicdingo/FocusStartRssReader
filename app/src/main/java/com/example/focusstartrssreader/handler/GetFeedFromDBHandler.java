@@ -1,7 +1,7 @@
 package com.example.focusstartrssreader.handler;
 
-import com.example.focusstartrssreader.RssFeedAdapter;
-import com.example.focusstartrssreader.activities.MainActivity;
+import com.example.focusstartrssreader.UI.adapters.RssFeedAdapter;
+import com.example.focusstartrssreader.UI.activities.MainActivity;
 
 import java.lang.ref.WeakReference;
 

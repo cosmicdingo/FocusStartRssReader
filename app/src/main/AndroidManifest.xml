@@ -14,17 +14,20 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".FeedDetailActivity"
-            android:parentActivityName=".activities.MainActivity"/>
+            android:name=".UI.activities.AddNewFeedActivity"
+            android:parentActivityName=".UI.activities.AddActivity"/>
         <activity
-            android:name=".activities.AddActivity"
+            android:name=".UI.activities.FeedDetailActivity"
+            android:parentActivityName=".UI.activities.MainActivity" />
+        <activity
+            android:name=".UI.activities.AddActivity"
             android:label="@string/add_activity"
-            android:parentActivityName=".activities.MainActivity" />
+            android:parentActivityName=".UI.activities.MainActivity" />
         <activity
-            android:name=".activities.SettingsActivity"
+            android:name=".UI.activities.SettingsActivity"
             android:label="@string/settings_activity"
-            android:parentActivityName=".activities.MainActivity" />
-        <activity android:name=".activities.MainActivity">
+            android:parentActivityName=".UI.activities.MainActivity" />
+        <activity android:name=".UI.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

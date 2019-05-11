@@ -11,7 +11,7 @@ public interface FeedRepository {
 
     // выполняем подключение к сети, парсинг и
     // загружаем данные в бд
-    boolean uploadData(String urlString);
+    boolean uploadData(String title, String urlString);
 
     // получаем данные из бд
     List<RssFeedModel> getData();
