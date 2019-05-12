@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -53,8 +53,8 @@ public class AddNewFeedActivity extends AppCompatActivity {
         cardView = (CardView) findViewById(R.id.channelCardView);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        fetchFeedTitleButton.setOnClickListener(listener);
-        cardView.setOnClickListener(listener);
+        fetchFeedTitleButton.setOnClickListener(fetchFeedTitleBtnListener);
+        cardView.setOnClickListener(cardViewListener);
 
         initToolbar();
 
@@ -107,39 +107,40 @@ public class AddNewFeedActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    View.OnClickListener listener = new View.OnClickListener() {
+    View.OnClickListener cardViewListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId())
-            {
-                case R.id.fetchFeedTitleButton:
-                    rssFeedLink = rssFeedLinkEditText.getText().toString();
-                    if(TextUtils.isEmpty(rssFeedLink))
-                        Toast.makeText(AddNewFeedActivity.this, "Invalid rss feed url", Toast.LENGTH_SHORT).show();
-                    else {
-                        progressBar.setVisibility(View.VISIBLE);
-                        // Создаем Intent для вызова сервиса
-                        Intent intent = new Intent(AddNewFeedActivity.this, FetchFeedService.class);
-                        intent.setAction(FETCH_FEED_TITLE_ACTION);
-                        // кладем в intent ссылку на новостную ленту
-                        intent.putExtra(URL_FEED_TAG, rssFeedLink);
-                        startService(intent);
-                    }
-                break;
-                case R.id.channelCardView:
-                    String tempRssFeedLink = rssFeedLinkEditText.getText().toString();
-                    if ( TextUtils.isEmpty(tempRssFeedLink) || !(rssFeedLink.equals(tempRssFeedLink)))
-                        Toast.makeText(AddNewFeedActivity.this, "Invalid url", Toast.LENGTH_LONG).show();
-                    else {
-                        progressBar.setVisibility(View.VISIBLE);
-                        Intent intent = new Intent(AddNewFeedActivity.this, FetchFeedService.class);
-                        intent.setAction(FETCH_FEED_ACTION);
-                        // кладем в intent ссылку на новостную ленту и заголовок ленты (используется для имени канала)
-                        intent.putExtra(URL_FEED_TITLE_TAG, feedTitle).putExtra(URL_FEED_TAG, rssFeedLink);
-                        startService(intent);
-                    }
-                break;
+            String tempRssFeedLink = rssFeedLinkEditText.getText().toString();
+            if ( TextUtils.isEmpty(tempRssFeedLink) || !(rssFeedLink.equals(tempRssFeedLink)))
+                Toast.makeText(AddNewFeedActivity.this, "Invalid url", Toast.LENGTH_LONG).show();
+            else {
+                progressBar.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(AddNewFeedActivity.this, FetchFeedService.class);
+                intent.setAction(FETCH_FEED_ACTION);
+                // кладем в intent ссылку на новостную ленту и заголовок ленты (используется для имени канала)
+                intent.putExtra(URL_FEED_TITLE_TAG, feedTitle).putExtra(URL_FEED_TAG, rssFeedLink);
+                startService(intent);
             }
+        }
+    };
+
+
+    View.OnClickListener fetchFeedTitleBtnListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            rssFeedLink = rssFeedLinkEditText.getText().toString();
+            if(TextUtils.isEmpty(rssFeedLink))
+                Toast.makeText(AddNewFeedActivity.this, "Invalid rss feed url", Toast.LENGTH_SHORT).show();
+            else {
+                progressBar.setVisibility(View.VISIBLE);
+                // Создаем Intent для вызова сервиса
+                Intent intent = new Intent(AddNewFeedActivity.this, FetchFeedService.class);
+                intent.setAction(FETCH_FEED_TITLE_ACTION);
+                // кладем в intent ссылку на новостную ленту
+                intent.putExtra(URL_FEED_TAG, rssFeedLink);
+                startService(intent);
+            }
+
         }
     };
 

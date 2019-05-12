@@ -14,7 +14,6 @@ import android.view.View;
 
 
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.UI.activities.AddNewFeedActivity;
 import com.example.focusstartrssreader.UI.viewmodel.ChannelViewModel;
 import com.example.focusstartrssreader.UI.adapters.RssChannelsAdapter;
 import com.example.focusstartrssreader.domain.model.Channel;
@@ -34,12 +33,28 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        initUI();
+        subscribeActivityOnLiveData();
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void initUI() {
+
         initToolbar();
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RssChannelsAdapter();
         recyclerView.setAdapter(recyclerViewAdapter);
+    }
+
+    private void subscribeActivityOnLiveData() {
 
         viewModel = ViewModelProviders.of(this).get(ChannelViewModel.class);
         viewModel.getChannels().observe(this, new Observer<List<Channel>>() {
@@ -48,13 +63,6 @@ public class AddActivity extends AppCompatActivity {
                 recyclerViewAdapter.addItems(channels);
             }
         });
-    }
-
-    private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     protected void onClickAddNewFeed(View view) {
