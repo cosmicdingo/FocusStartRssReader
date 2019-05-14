@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.UI.activities.MainActivity;
+import com.example.focusstartrssreader.UI.activities.main.MainActivity;
 import com.example.focusstartrssreader.domain.model.Channel;
 
 import java.util.ArrayList;

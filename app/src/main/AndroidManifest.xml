@@ -14,20 +14,20 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".UI.activities.AddNewFeedActivity"
-            android:parentActivityName=".UI.activities.AddActivity"/>
+            android:name=".UI.activities.add.AddNewFeedActivity"
+            android:parentActivityName=".UI.activities.add.AddActivity"/>
         <activity
-            android:name=".UI.activities.FeedDetailActivity"
-            android:parentActivityName=".UI.activities.MainActivity" />
+            android:name=".UI.activities.detail.FeedDetailActivity"
+            android:parentActivityName=".UI.activities.main.MainActivity" />
         <activity
-            android:name=".UI.activities.AddActivity"
+            android:name=".UI.activities.add.AddActivity"
             android:label="@string/add_activity"
-            android:parentActivityName=".UI.activities.MainActivity" />
+            android:parentActivityName=".UI.activities.main.MainActivity" />
         <activity
-            android:name=".UI.activities.SettingsActivity"
+            android:name=".UI.activities.settings.SettingsActivity"
             android:label="@string/settings_activity"
-            android:parentActivityName=".UI.activities.MainActivity" />
-        <activity android:name=".UI.activities.MainActivity">
+            android:parentActivityName=".UI.activities.main.MainActivity" />
+        <activity android:name=".UI.activities.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +36,7 @@
         </activity>
 
         <service
-            android:name=".service.FetchFeedService"
+            android:name=".service.service.FetchFeedService"
             android:exported="false" />
     </application>
 

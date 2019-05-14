@@ -1,11 +1,13 @@
-package com.example.focusstartrssreader.service;
+package com.example.focusstartrssreader.service.service;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.example.focusstartrssreader.UI.activities.AddNewFeedActivity;
+import com.example.focusstartrssreader.UI.activities.add.AddNewFeedActivity;
+import com.example.focusstartrssreader.service.FetchFeedImpl;
+import com.example.focusstartrssreader.service.FetchFeedTitleImpl;
 import com.example.focusstartrssreader.service.runnable.FetchFeedRunnable;
 import com.example.focusstartrssreader.service.runnable.FetchFeedTitleRunnable;
 
@@ -27,12 +29,17 @@ public class FetchFeedService extends Service {
         String action = intent.getAction();
         switch (action) {
             case AddNewFeedActivity.FETCH_FEED_TITLE_ACTION:
-                FetchFeedTitleRunnable titleRunnable = new FetchFeedTitleRunnable(this, intent, urlLink);
+
+                // В FetchFeedTitleImpl мы отправляем broadcast в AddNewFeedActivity,
+                // в broadcast записываем заголовок новостной ленты(заголовок канала))
+                FetchFeedTitleImpl feedTitleImpl = new FetchFeedTitleImpl(this);
+                FetchFeedTitleRunnable titleRunnable = new FetchFeedTitleRunnable(feedTitleImpl, intent, urlLink);
                 executorService.execute(titleRunnable);
                 break;
             case AddNewFeedActivity.FETCH_FEED_ACTION:
                 String title = intent.getStringExtra(AddNewFeedActivity.URL_FEED_TITLE_TAG);
-                FetchFeedRunnable feedRunnable = new FetchFeedRunnable(this, intent, title, urlLink);
+                FetchFeedImpl feedImpl = new FetchFeedImpl(this);
+                FetchFeedRunnable feedRunnable = new FetchFeedRunnable(feedImpl, intent, title, urlLink);
                 executorService.execute(feedRunnable);
                 break;
         }

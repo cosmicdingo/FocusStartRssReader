@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.activities;
+package com.example.focusstartrssreader.UI.activities.add;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;

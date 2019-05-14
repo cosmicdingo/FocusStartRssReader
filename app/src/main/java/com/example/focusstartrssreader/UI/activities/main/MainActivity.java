@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.activities;
+package com.example.focusstartrssreader.UI.activities.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.focusstartrssreader.R;
+import com.example.focusstartrssreader.UI.activities.add.AddActivity;
+import com.example.focusstartrssreader.UI.activities.settings.SettingsActivity;
 import com.example.focusstartrssreader.UI.adapters.RssFeedAdapter;
 import com.example.focusstartrssreader.UI.viewmodel.RssFeedViewModel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;

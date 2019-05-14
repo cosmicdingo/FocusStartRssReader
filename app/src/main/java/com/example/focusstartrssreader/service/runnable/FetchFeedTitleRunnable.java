@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.focusstartrssreader.RssFeedApp;
-import com.example.focusstartrssreader.UI.activities.AddNewFeedActivity;
+import com.example.focusstartrssreader.service.FetchFeedInterface;
 
 
 // получаем title новостной ленты, выводим его в AddActivity
@@ -13,16 +13,16 @@ public class FetchFeedTitleRunnable implements Runnable {
 
     public final static String TAG = "FetchFeedTitleRunnable";
 
-
-    private Context context;
+    private FetchFeedInterface fetchFeedInterface;
     private Intent intent;
     private String urlLink;
 
-    public FetchFeedTitleRunnable(Context context, Intent intent, String urlLink) {
-        this.context = context;
+    public FetchFeedTitleRunnable(FetchFeedInterface fetchFeedInterface, Intent intent, String urlLink) {
+        this.fetchFeedInterface = fetchFeedInterface;
         this.intent = intent;
         this.urlLink = urlLink;
     }
+
     @Override
     public void run() {
 
@@ -31,15 +31,13 @@ public class FetchFeedTitleRunnable implements Runnable {
         // в методе getFeedTitle выполняем подключение к интернету,
         // возращаем загловок ленты
         String rssFeedTitle = RssFeedApp.getInstance().getFeedRepository().getFeedTitle(urlLink);
-
-        Intent broadcastIntent = new Intent(AddNewFeedActivity.BROADCAST_FETCH_FEED_TITLE_ACTION);
-        broadcastIntent.putExtra(AddNewFeedActivity.URL_FEED_TITLE_TAG, rssFeedTitle);
-        // оповещаем AddActivity
-        context.sendBroadcast(broadcastIntent);
-        stop();
+        // в методе onFinished отправляем broadcast в AddNewFeedActivity
+        // с заголовком новостной ленты (название канала)
+        fetchFeedInterface.onFinished(rssFeedTitle);
+        stop(fetchFeedInterface.getContext());
     }
 
-    void stop() {
+    void stop(Context context) {
         context.stopService(intent);
     }
 }

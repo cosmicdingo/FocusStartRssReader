@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.activities;
+package com.example.focusstartrssreader.UI.activities.add;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.service.FetchFeedService;
+import com.example.focusstartrssreader.service.service.FetchFeedService;
 
 public class AddNewFeedActivity extends AppCompatActivity {
 
@@ -143,6 +143,19 @@ public class AddNewFeedActivity extends AppCompatActivity {
 
         }
     };
+
+    public static Intent getFetchFeedTitleBroadcastIntent(String rssFeedTitle) {
+        Intent broadcastIntent = new Intent(BROADCAST_FETCH_FEED_TITLE_ACTION);
+        broadcastIntent.putExtra(URL_FEED_TITLE_TAG, rssFeedTitle);
+        return broadcastIntent;
+    }
+
+    public static Intent getFetchFeedBroadcastIntent(Boolean success) {
+        Intent broadcastIntent = new Intent(BROADCAST_FETCH_FEED_ACTION);
+        broadcastIntent.putExtra(FETCH_FEED_SUCCESS_TAG, success);
+        return broadcastIntent;
+    }
+
 
     @Override
     protected void onDestroy() {
