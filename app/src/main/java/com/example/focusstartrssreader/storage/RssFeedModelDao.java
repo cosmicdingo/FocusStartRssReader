@@ -1,5 +1,6 @@
 package com.example.focusstartrssreader.storage;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -27,6 +28,12 @@ public interface RssFeedModelDao {
     @Delete
     void delete(RssFeedModel rssFeedModel);
 
+    @Query("DELETE FROM RssFeedModel WHERE channelTitle = :chTitle")
+    int deleteChannelNewsFeed(String chTitle);
+
     @Query("SELECT * FROM RssFeedModel")
     List<RssFeedModel> getAll();
+
+    @Query("SELECT * FROM RssFeedModel WHERE channelTitle = :chTitle")
+    LiveData<List<RssFeedModel>> getChannelNewsFeed(String chTitle);
 }

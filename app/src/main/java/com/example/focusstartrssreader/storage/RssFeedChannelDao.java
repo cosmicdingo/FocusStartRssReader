@@ -18,7 +18,7 @@ public interface RssFeedChannelDao {
     void insertChannel(Channel channel);
 
     @Delete
-    void delete(Channel rssFeedModel);
+    void delete(Channel channel);
 
     @Query("SELECT * FROM Channel")
     List<Channel> getList();

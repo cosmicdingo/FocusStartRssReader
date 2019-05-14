@@ -18,7 +18,7 @@ public class RssFeedParser {
     private static final String XML_PULL_PARSER_EXCEPTION = "XmlPullParserException";
 
     //Парсинг RSS ленты
-    public List<RssFeedModel> parseFeed(InputStream inputStream) throws IOException {
+    public List<RssFeedModel> parseFeed(InputStream inputStream, String channelTitle) throws IOException {
 
         String title = null;
         String link = null;
@@ -84,7 +84,7 @@ public class RssFeedParser {
                 if (title != null && link != null && description != null && pubDate != null) {
 
                     if (isItem) {
-                        RssFeedModel item = new RssFeedModel(title, link, description, pubDate);
+                        RssFeedModel item = new RssFeedModel(channelTitle, title, link, description, pubDate);
                         items.add(item);
                     }
                     title = null;
@@ -100,6 +100,13 @@ public class RssFeedParser {
         }
         finally {
             inputStream.close();
+        }
+
+        for (RssFeedModel model : items) {
+            Log.d("parser", "*********************");
+            Log.d("parser", "model.channel_title: " + model.getChannelTitle());
+            Log.d("parser", "model.news_title: " + model.getTitle());
+            Log.d("parser", "*********************");
         }
         return items;
     }

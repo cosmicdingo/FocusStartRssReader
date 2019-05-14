@@ -12,12 +12,14 @@ public class RssFeedModel {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
+    private String channelTitle;
     private String title;
     private String link;
     private String description;
     private String pubDate;
 
-    public RssFeedModel(String title, String link, String description, String pubDate) {
+    public RssFeedModel(String channelTitle, String title, String link, String description, String pubDate) {
+        this.channelTitle = channelTitle;
         this.title = title;
         this.link = link;
         this.description = description;
@@ -46,5 +48,9 @@ public class RssFeedModel {
 
     public String getPubDate() {
         return pubDate;
+    }
+
+    public String getChannelTitle() {
+        return channelTitle;
     }
 }

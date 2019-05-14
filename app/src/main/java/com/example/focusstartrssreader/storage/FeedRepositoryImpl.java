@@ -31,6 +31,10 @@ public class FeedRepositoryImpl implements FeedRepository {
         rssFeedModels = null;
     }
 
+
+    /**********************************************************************/
+    /******* методы для работы с сервисом и загрузки данных в бд***********/
+    /**********************************************************************/
     @Override
     public String getFeedTitle(String urlString) {
 
@@ -54,7 +58,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     @Override
-    public boolean uploadData(String title, String urlString) {
+    public boolean uploadData(String channelTitle, String urlString) {
 
         boolean connIsEstablished = false;
 
@@ -69,7 +73,7 @@ public class FeedRepositoryImpl implements FeedRepository {
 
                 InputStream is = httpConn.getInputStream();
                 // парсим ленту
-                rssFeedModels = parser.parseFeed(is);
+                rssFeedModels = parser.parseFeed(is, channelTitle);
 
                 // Из Database объекта получаем Dao
                 RssFeedModelDao feedModelDao = database.rssFeedModelDao();
@@ -80,11 +84,16 @@ public class FeedRepositoryImpl implements FeedRepository {
                 // соединение было установлено, данные добавлены в бд
                 connIsEstablished = true;
                 // добавляем канал в бд
-                insertChannelInDatabase(title, urlString);
+                insertChannelInDatabase(channelTitle, urlString);
 
-                List<RssFeedModel> rssFeedModelList = database.rssFeedModelDao().getAll();
-                for (RssFeedModel feedModel : rssFeedModelList)
-                    Log.d("RssFeedModel", "title " + feedModel.getTitle() + "\n");
+                List<RssFeedModel> rssFeedModelList = feedModelDao.getAll();
+                for (RssFeedModel feedModel : rssFeedModelList) {
+
+                    Log.d("uploadData", "*********************");
+                    Log.d("uploadData", "model.channel_title: " + feedModel.getChannelTitle());
+                    Log.d("uploadData", "model.news_title: " + feedModel.getTitle());
+                    Log.d("uploadData", "*********************");
+                }
             }
         }
         catch (IOException ex) {
@@ -97,24 +106,11 @@ public class FeedRepositoryImpl implements FeedRepository {
         return connIsEstablished;
     }
 
-
-    // получаем данные из бд
-    public List<RssFeedModel> getData() {
-
-        Log.d("RssFeedRepositoryImpl", "RssFeedRepositoryImpl: getData");
-
-        rssFeedModels = null;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                rssFeedModels = database.rssFeedModelDao().getAll();
-            }
-        }).start();
-       return rssFeedModels;
-    }
-
+    /**********************************************************************/
+    /*******       методы для работы со списком каналов          ***********/
+    /**********************************************************************/
     // добавляем канал в бд
-    private void insertChannelInDatabase(String title, String urlString) {
+    public void insertChannelInDatabase(String title, String urlString) {
         // создаем объект канала
         Channel channel = new Channel(title, urlString);
         // Из Database объекта получаем RssFeedChannelDao
@@ -123,17 +119,33 @@ public class FeedRepositoryImpl implements FeedRepository {
         channelDao.insertChannel(channel);
     }
 
-    private void setResult(List<RssFeedModel> rssFeedModels) {
-        this.rssFeedModels = rssFeedModels;
-    }
-
-    public List<RssFeedModel> getRssFeedModels() {
-        return rssFeedModels;
-    }
-
-    public LiveData<List<Channel>> getRssFeedChannels() {
+    public LiveData<List<Channel>> getChannelsLiveData() {
         // Из Database объекта получаем RssFeedChannelDao
         RssFeedChannelDao channelDao = database.rssFeedChannelDao();
         return channelDao.getAll();
     }
+
+    public int deleteChannel(Channel channel) {
+
+        // удаляем все новости из бд, связанные с удаляемым каналом
+        String channelTitle = channel.getChannelTitle();
+        RssFeedModelDao feedModelDao = database.rssFeedModelDao();
+        feedModelDao.deleteChannelNewsFeed(channelTitle);
+
+        // удаляем сам канал
+        RssFeedChannelDao channelDao = database.rssFeedChannelDao();
+        channelDao.delete(channel);
+        return 0;
+    }
+
+
+    /**********************************************************************/
+    /*******      метод для работы со списком новостей канала   ***********/
+    /**********************************************************************/
+    public LiveData<List<RssFeedModel>> getChannelNewsFeedLiveData(String channelTitle) {
+        RssFeedModelDao feedModelDao = database.rssFeedModelDao();
+        return feedModelDao.getChannelNewsFeed(channelTitle);
+    }
+
+
 }

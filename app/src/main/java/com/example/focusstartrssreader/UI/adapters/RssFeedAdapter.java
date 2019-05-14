@@ -22,8 +22,8 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
 
     private List<RssFeedModel> rssFeedModels;
 
-    public RssFeedAdapter(List<RssFeedModel> rssFeedModels) {
-        this.rssFeedModels = rssFeedModels;
+    public RssFeedAdapter() {
+        this.rssFeedModels = new ArrayList<>();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -83,6 +83,11 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
                 cardView.getContext().startActivity(intent);
             }
         });
+    }
+
+    public void setRssFeedModels(List<RssFeedModel> newRssFeedModels) {
+        this.rssFeedModels = newRssFeedModels;
+        notifyDataSetChanged();
     }
 
     @Override

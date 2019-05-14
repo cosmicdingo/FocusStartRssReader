@@ -13,14 +13,21 @@ public class ChannelViewModel extends ViewModel {
     LiveData<List<Channel>> channelLiveData;
 
     public ChannelViewModel() {
-        channelLiveData = RssFeedApp.getInstance().getFeedRepository().getRssFeedChannels();
+        channelLiveData = RssFeedApp.getInstance().getFeedRepository().getChannelsLiveData();
     }
 
     public LiveData<List<Channel>> getChannels() {
         return channelLiveData;
     }
 
-    public void deleteChannel() {
+    public void deleteChannel(final Channel channel) {
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                RssFeedApp.getInstance().getFeedRepository().deleteChannel(channel);
+            }
+        });
+        thread.start();
     }
 }

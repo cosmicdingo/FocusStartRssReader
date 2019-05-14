@@ -1,13 +1,16 @@
 package com.example.focusstartrssreader.UI.adapters;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.focusstartrssreader.R;
+import com.example.focusstartrssreader.UI.activities.MainActivity;
 import com.example.focusstartrssreader.domain.model.Channel;
 
 import java.util.ArrayList;
@@ -39,16 +42,25 @@ public class RssChannelsAdapter extends RecyclerView.Adapter<RssChannelsAdapter.
     // Метод onBindViewHolder() вызывается каждый раз, когда компоненту RecyclerView потребуется вывести
     // данные во ViewHolder
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
-        CardView cardView = viewHolder.cardView;
+        final CardView cardView = viewHolder.cardView;
         TextView tvTitleChannel = (TextView) cardView.findViewById(R.id.tvChannelTitle);
-        String titleChannel = channels.get(i).getChannelTitle();
+        final String titleChannel = channels.get(i).getChannelTitle();
         tvTitleChannel.setText(titleChannel);
 
-        TextView tvChannelLink = (TextView) cardView.findViewById(R.id.tvChannelLink);
+        /*TextView tvChannelLink = (TextView) cardView.findViewById(R.id.tvChannelLink);
         String channelLink = channels.get(i).getChannelLink();
-        tvChannelLink.setText(channelLink);
+        tvChannelLink.setText(channelLink);*/
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(cardView.getContext(), MainActivity.class);
+                intent.putExtra(MainActivity.CHANNEL_TITLE, titleChannel);
+                cardView.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -59,6 +71,10 @@ public class RssChannelsAdapter extends RecyclerView.Adapter<RssChannelsAdapter.
     public void addItems(List<Channel> newChannels) {
         this.channels = newChannels;
         notifyDataSetChanged();
+    }
+
+    public Channel getItem(int position) {
+        return channels.get(position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

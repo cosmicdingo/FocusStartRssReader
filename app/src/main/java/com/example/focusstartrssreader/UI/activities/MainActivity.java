@@ -1,5 +1,7 @@
 package com.example.focusstartrssreader.UI.activities;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,34 +15,58 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.handler.GetFeedFromDBHandler;
-import com.example.focusstartrssreader.handler.GetFeedFromDBRunnable;
+import com.example.focusstartrssreader.UI.adapters.RssFeedAdapter;
+import com.example.focusstartrssreader.UI.viewmodel.RssFeedViewModel;
+import com.example.focusstartrssreader.domain.model.RssFeedModel;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public final static String TAG = "MainActivity TAG";
+    public final static String CHANNEL_TITLE = "channel title";
+
+    String channelTitle = "";
 
     private RecyclerView recyclerView;
+    private RssFeedAdapter adapter;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private Toolbar toolbar;
 
-    GetFeedFromDBHandler handler;
+    private RssFeedViewModel feedViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initUI();
+
+        Intent intent = getIntent();
+        channelTitle = intent.getStringExtra(CHANNEL_TITLE);
+
+        feedViewModel = ViewModelProviders.of(this).get(RssFeedViewModel.class);
+        feedViewModel.getChannelFeed(channelTitle).observe(this, new Observer<List<RssFeedModel>>() {
+            @Override
+            public void onChanged(@Nullable List<RssFeedModel> rssFeedModels) {
+                adapter.setRssFeedModels(rssFeedModels);
+            }
+        });
+    }
+
+    private void initUI() {
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        adapter = new RssFeedAdapter();
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        handler = new GetFeedFromDBHandler(this);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     // метод добавляет элементы действий из файлов
@@ -76,16 +102,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG, "onActivityResult: ");
         if (data == null) return;
-        getFeedFromDB();
     }
-
-    private void getFeedFromDB() {
-        Thread thread = new Thread(new GetFeedFromDBRunnable(handler));
-        thread.start();
-    }
-
-    public RecyclerView getRecyclerView() {
-        return recyclerView;
-    }
-
 }
