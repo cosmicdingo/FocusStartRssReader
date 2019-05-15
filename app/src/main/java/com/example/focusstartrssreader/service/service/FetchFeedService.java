@@ -6,8 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.focusstartrssreader.UI.activities.add.AddNewFeedActivity;
-import com.example.focusstartrssreader.service.FetchFeedImpl;
-import com.example.focusstartrssreader.service.FetchFeedTitleImpl;
+import com.example.focusstartrssreader.service.listener.OnFinishListener;
 import com.example.focusstartrssreader.service.runnable.FetchFeedRunnable;
 import com.example.focusstartrssreader.service.runnable.FetchFeedTitleRunnable;
 
@@ -17,10 +16,9 @@ import java.util.concurrent.Executors;
 public class FetchFeedService extends Service {
 
     public final static String TAG = "FetchFeedService";
-    //private static final String TAG = "FetchFeedService";
     private ExecutorService executorService;
 
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
 
         Log.d(AddNewFeedActivity.TAG, "onStartCommand");
 
@@ -30,17 +28,26 @@ public class FetchFeedService extends Service {
         switch (action) {
             case AddNewFeedActivity.FETCH_FEED_TITLE_ACTION:
 
-                // В FetchFeedTitleImpl мы отправляем broadcast в AddNewFeedActivity,
-                // в broadcast записываем заголовок новостной ленты(заголовок канала))
-                FetchFeedTitleImpl feedTitleImpl = new FetchFeedTitleImpl(this);
-                FetchFeedTitleRunnable titleRunnable = new FetchFeedTitleRunnable(feedTitleImpl, intent, urlLink);
-                executorService.execute(titleRunnable);
+                // в broadcast записываем заголовок новостной ленты(заголовок канала)
+                executorService.execute(new FetchFeedTitleRunnable(urlLink, new OnFinishListener() {
+                    @Override
+                    public void onFinished(Object object) {
+                        Intent broadcastIntent = AddNewFeedActivity.getFetchFeedTitleBroadcastIntent((String) object);
+                        sendBroadcast(broadcastIntent);
+                        stopService(intent);
+                    }
+                }));
                 break;
             case AddNewFeedActivity.FETCH_FEED_ACTION:
                 String title = intent.getStringExtra(AddNewFeedActivity.URL_FEED_TITLE_TAG);
-                FetchFeedImpl feedImpl = new FetchFeedImpl(this);
-                FetchFeedRunnable feedRunnable = new FetchFeedRunnable(feedImpl, intent, title, urlLink);
-                executorService.execute(feedRunnable);
+                executorService.execute(new FetchFeedRunnable(title, urlLink, new OnFinishListener() {
+                    @Override
+                    public void onFinished(Object object) {
+                        Intent broadcastIntent = AddNewFeedActivity.getFetchFeedBroadcastIntent((boolean) object);
+                        sendBroadcast(broadcastIntent);
+                        stopService(intent);
+                    }
+                }));
                 break;
         }
         return super.onStartCommand(intent, flags, startId);

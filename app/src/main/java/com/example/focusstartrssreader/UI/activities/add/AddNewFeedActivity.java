@@ -144,12 +144,17 @@ public class AddNewFeedActivity extends AppCompatActivity {
         }
     };
 
+    // используется для уведомления AddNewFeedActivity о том,
+    // что данные получены (заголовок новостной ленты(заголовок канала))
     public static Intent getFetchFeedTitleBroadcastIntent(String rssFeedTitle) {
         Intent broadcastIntent = new Intent(BROADCAST_FETCH_FEED_TITLE_ACTION);
         broadcastIntent.putExtra(URL_FEED_TITLE_TAG, rssFeedTitle);
         return broadcastIntent;
     }
 
+    // используется для уведомления AddNewFeedActivity о том,
+    // все данные записаны в бд (канал занесен в список каналов,
+    // новостная лента канала занесена в бд списка новостей)
     public static Intent getFetchFeedBroadcastIntent(Boolean success) {
         Intent broadcastIntent = new Intent(BROADCAST_FETCH_FEED_ACTION);
         broadcastIntent.putExtra(FETCH_FEED_SUCCESS_TAG, success);

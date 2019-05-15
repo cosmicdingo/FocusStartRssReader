@@ -5,22 +5,22 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.focusstartrssreader.RssFeedApp;
-import com.example.focusstartrssreader.service.FetchFeedInterface;
+import com.example.focusstartrssreader.service.listener.OnFinishListener;
 
 public class FetchFeedRunnable implements Runnable {
 
     public final static String TAG = "FetchFeedRunnable";
 
-    private FetchFeedInterface fetchFeedInterface;
-    private Intent intent;
+    //private Intent intent;
     private String title;
     private String urlLink;
+    private OnFinishListener finishListener;
 
-    public FetchFeedRunnable(FetchFeedInterface fetchFeedInterface, Intent intent, String title, String urlLink) {
-        this.fetchFeedInterface = fetchFeedInterface;
-        this.intent = intent;
+    public FetchFeedRunnable(String title, String urlLink, OnFinishListener finishListener) {
+        //this.intent = intent;
         this.title = title;
         this.urlLink = urlLink;
+        this.finishListener = finishListener;
     }
     @Override
     public void run() {
@@ -31,11 +31,7 @@ public class FetchFeedRunnable implements Runnable {
         boolean success = RssFeedApp.getInstance().getFeedRepository().uploadData(title, urlLink);
         // в методе onFinished отправляем broadcast в AddNewFeedActivity
         // в broadcast помещаем success
-        fetchFeedInterface.onFinished(success);
-        stop(fetchFeedInterface.getContext());
+        finishListener.onFinished(success);
     }
 
-    void stop(Context context) {
-        context.stopService(intent);
-    }
 }

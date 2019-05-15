@@ -1,26 +1,22 @@
 package com.example.focusstartrssreader.service.runnable;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.example.focusstartrssreader.RssFeedApp;
-import com.example.focusstartrssreader.service.FetchFeedInterface;
+import com.example.focusstartrssreader.service.listener.OnFinishListener;
 
 
-// получаем title новостной ленты, выводим его в AddActivity
+// получаем title новостной ленты, выводим его в AddNewFeedActivity
 public class FetchFeedTitleRunnable implements Runnable {
 
     public final static String TAG = "FetchFeedTitleRunnable";
 
-    private FetchFeedInterface fetchFeedInterface;
-    private Intent intent;
     private String urlLink;
+    private OnFinishListener finishListener;
 
-    public FetchFeedTitleRunnable(FetchFeedInterface fetchFeedInterface, Intent intent, String urlLink) {
-        this.fetchFeedInterface = fetchFeedInterface;
-        this.intent = intent;
+    public FetchFeedTitleRunnable(String urlLink, OnFinishListener finishListener) {
         this.urlLink = urlLink;
+        this.finishListener = finishListener;
     }
 
     @Override
@@ -33,11 +29,6 @@ public class FetchFeedTitleRunnable implements Runnable {
         String rssFeedTitle = RssFeedApp.getInstance().getFeedRepository().getFeedTitle(urlLink);
         // в методе onFinished отправляем broadcast в AddNewFeedActivity
         // с заголовком новостной ленты (название канала)
-        fetchFeedInterface.onFinished(rssFeedTitle);
-        stop(fetchFeedInterface.getContext());
-    }
-
-    void stop(Context context) {
-        context.stopService(intent);
+        finishListener.onFinished(rssFeedTitle);
     }
 }
