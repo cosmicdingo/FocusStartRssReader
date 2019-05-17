@@ -44,7 +44,8 @@ public class AddActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if(actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private void initUI() {

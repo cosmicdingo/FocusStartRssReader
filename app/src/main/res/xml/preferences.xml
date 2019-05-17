@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="auto_sync_key"
+        android:title="@string/auto_back_sync"
+        app:iconSpaceReserved="false" />
+
+    <ListPreference
+        android:entries="@array/sync_interval"
+        android:entryValues="@array/sync_interval"
+        android:key="sync_interval_key"
+        android:title="@string/sync_interval"
+        android:persistent="true"
+        android:defaultValue="2 hours"
+        android:dependency="auto_sync_key"
+        app:iconSpaceReserved="false" />
+
+</PreferenceScreen>

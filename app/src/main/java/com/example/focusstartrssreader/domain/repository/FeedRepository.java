@@ -25,6 +25,8 @@ public interface FeedRepository {
 
     void insertChannelInDatabase(String title, String urlString);
 
+    List<Channel> getAllChannelList();
+
     LiveData<List<Channel>> getChannelsLiveData();
 
     int deleteChannel(Channel channel);

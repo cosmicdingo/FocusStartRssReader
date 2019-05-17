@@ -15,7 +15,7 @@ import com.example.focusstartrssreader.storage.RssFeedDatabase;
 
 public class RssFeedApp extends Application {
 
-    public static RssFeedApp instance;
+    private static RssFeedApp instance;
 
     private FeedRepositoryImpl repository;
 

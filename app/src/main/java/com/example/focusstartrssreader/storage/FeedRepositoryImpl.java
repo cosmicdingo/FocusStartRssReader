@@ -138,6 +138,10 @@ public class FeedRepositoryImpl implements FeedRepository {
         return 0;
     }
 
+    public List<Channel> getAllChannelList() {
+        return database.rssFeedChannelDao().getList();
+    }
+
 
     /**********************************************************************/
     /*******      метод для работы со списком новостей канала   ***********/

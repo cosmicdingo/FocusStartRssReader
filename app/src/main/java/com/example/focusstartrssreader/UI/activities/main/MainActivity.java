@@ -3,6 +3,7 @@ package com.example.focusstartrssreader.UI.activities.main;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String TAG = "MainActivity TAG";
     public final static String CHANNEL_TITLE = "channel title";
 
-    String channelTitle = "";
+    String channelTitle;// = "";
 
     private RecyclerView recyclerView;
     private RssFeedAdapter adapter;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RssFeedViewModel feedViewModel;
 
+    private SharedPreferences preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +48,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initUI();
-
-        Intent intent = getIntent();
-        channelTitle = intent.getStringExtra(CHANNEL_TITLE);
-
-        feedViewModel = ViewModelProviders.of(this).get(RssFeedViewModel.class);
-        feedViewModel.getChannelFeed(channelTitle).observe(this, new Observer<List<RssFeedModel>>() {
-            @Override
-            public void onChanged(@Nullable List<RssFeedModel> rssFeedModels) {
-                adapter.setRssFeedModels(rssFeedModels);
-            }
-        });
     }
 
     private void initUI() {
@@ -69,6 +61,51 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onCreateViewModel();
+    }
+
+    private void onCreateViewModel() {
+
+        Intent intent = getIntent();
+        channelTitle = intent.getStringExtra(CHANNEL_TITLE);
+        //Log.d(TAG, "channelTitle: " + channelTitle);
+        if (channelTitle == null)
+            channelTitle = loadChannelTitle();
+
+        feedViewModel = ViewModelProviders.of(this).get(RssFeedViewModel.class);
+        feedViewModel.getChannelFeed(channelTitle).observe(this, new Observer<List<RssFeedModel>>() {
+            @Override
+            public void onChanged(@Nullable List<RssFeedModel> rssFeedModels) {
+                adapter.setRssFeedModels(rssFeedModels);
+            }
+        });
+    }
+
+
+    private String loadChannelTitle() {
+        preferences = getPreferences(MODE_PRIVATE);
+        return preferences.getString(CHANNEL_TITLE, "");
+    }
+
+    private void saveChannelTitle() {
+        if (channelTitle != null) {
+            preferences = getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(CHANNEL_TITLE, channelTitle);
+            editor.commit();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveChannelTitle();
+
     }
 
     // метод добавляет элементы действий из файлов
@@ -94,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             // настройки приложения
             case R.id.action_settings_feed:
-                startActivityForResult(new Intent(this, SettingsActivity.class), 1);
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);}
@@ -105,4 +142,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onActivityResult: ");
         if (data == null) return;
     }
+
+
 }

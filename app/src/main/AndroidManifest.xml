@@ -15,7 +15,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".UI.activities.add.AddNewFeedActivity"
-            android:parentActivityName=".UI.activities.add.AddActivity"/>
+            android:label="@string/add_new_feed_activity"
+            android:parentActivityName=".UI.activities.add.AddActivity" />
         <activity
             android:name=".UI.activities.detail.FeedDetailActivity"
             android:parentActivityName=".UI.activities.main.MainActivity" />

@@ -1,22 +1,103 @@
 package com.example.focusstartrssreader.UI.activities.settings;
 
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.example.focusstartrssreader.R;
+import com.example.focusstartrssreader.worker.AutoBackgroundSyncWorkerTest;
 
-public class SettingsActivity extends AppCompatActivity {
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
+public class SettingsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+    public static final String TAG = "settings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        initToolbar();
+
+        setupSharedPreference();
+
+    }
+
+    private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if(actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setupSharedPreference() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    private void loadSyncIntervalFromPreference(SharedPreferences sharedPreferences) {
+        changeSyncInterval(sharedPreferences.getString("sync_interval_key", "2 hours"));
+    }
+
+    private void changeSyncInterval(String sync_interval_key_value) {
+        switch (sync_interval_key_value)
+        {
+            case "15 mins":
+                Log.d(TAG, "changeSyncInterval: " + sync_interval_key_value);
+                break;
+            case "30 mins":
+                Log.d(TAG, "changeSyncInterval: " + sync_interval_key_value);
+                break;
+            case "1 hour":
+                Log.d(TAG, "changeSyncInterval: " + sync_interval_key_value);
+                break;
+            case "2 hours":
+                Log.d(TAG, "changeSyncInterval: " + sync_interval_key_value);
+                break;
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case "auto_sync_key":
+                boolean isEnableSync = sharedPreferences.getBoolean("auto_sync_key", false);
+                if (isEnableSync) {
+                    setSyncInterval(isEnableSync);
+                }
+                else {
+                    Log.d(TAG, "Auto background sync: " + isEnableSync);
+                }
+                break;
+            case "sync_interval_key":
+                loadSyncIntervalFromPreference(sharedPreferences);
+                break;
+        }
+    }
+
+    private void startWorkAutoBackSync() {
+        OneTimeWorkRequest autoBackSyncRequest = new OneTimeWorkRequest.Builder(AutoBackgroundSyncWorkerTest.class).build();
+        // запускаем задачу
+        WorkManager.getInstance().enqueue(autoBackSyncRequest);
+    }
+
+    private void setSyncInterval(boolean auto_sync_key) {
+        //if (auto_sync_key)
+        Log.d(TAG, "Auto background sync: " + auto_sync_key);
+        startWorkAutoBackSync();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 }

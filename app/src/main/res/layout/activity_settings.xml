@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".UI.activities.settings.SettingsActivity">
+    android:orientation="vertical">
 
     <include
         layout="@layout/toolbar_main"
-        android:id="@+id/toolbar" />
+        android:id="@+id/toolbar"/>
 
-    <LinearLayout
+    <fragment
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment"
+        android:name="com.example.focusstartrssreader.UI.activities.settings.SettingsFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <Switch
-            android:id="@+id/autoSyncSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/auto_back_sync" />
-    </LinearLayout>
-
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_settings">
+    </fragment>
 
 </LinearLayout>

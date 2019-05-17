@@ -11,13 +11,11 @@ public class FetchFeedRunnable implements Runnable {
 
     public final static String TAG = "FetchFeedRunnable";
 
-    //private Intent intent;
     private String title;
     private String urlLink;
     private OnFinishListener finishListener;
 
     public FetchFeedRunnable(String title, String urlLink, OnFinishListener finishListener) {
-        //this.intent = intent;
         this.title = title;
         this.urlLink = urlLink;
         this.finishListener = finishListener;

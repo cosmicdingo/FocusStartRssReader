@@ -27,7 +27,8 @@ public class FeedDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if(actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
         newsTitleTV = (TextView) findViewById(R.id.newsTitleTV);
         newsDateTV = (TextView) findViewById(R.id.newsDateTV);

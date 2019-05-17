@@ -39,6 +39,7 @@ public class FetchFeedService extends Service {
                 }));
                 break;
             case AddNewFeedActivity.FETCH_FEED_ACTION:
+
                 String title = intent.getStringExtra(AddNewFeedActivity.URL_FEED_TITLE_TAG);
                 executorService.execute(new FetchFeedRunnable(title, urlLink, new OnFinishListener() {
                     @Override
