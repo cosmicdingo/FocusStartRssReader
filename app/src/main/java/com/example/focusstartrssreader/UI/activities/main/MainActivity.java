@@ -1,5 +1,6 @@
 package com.example.focusstartrssreader.UI.activities.main;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -17,12 +18,21 @@ import android.view.MenuItem;
 
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.UI.activities.add.AddActivity;
+import com.example.focusstartrssreader.UI.activities.detail.FeedDetailActivity;
 import com.example.focusstartrssreader.UI.activities.settings.SettingsActivity;
+import com.example.focusstartrssreader.UI.adapters.Listener;
 import com.example.focusstartrssreader.UI.adapters.RssFeedAdapter;
 import com.example.focusstartrssreader.UI.viewmodel.RssFeedViewModel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
+import com.example.focusstartrssreader.worker.DoSyncWorker;
+
 
 import java.util.List;
+
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,15 +62,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUI() {
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         adapter = new RssFeedAdapter();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(swipeListener);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Реализация метода onClick() интерфейса RssFeedAdapter.Listener
+        // запускает AddNewFeedActivity, передавая ей id(id новости в бд) новости,
+        // выбранноной юзером
+        adapter.setListener(new Listener() {
+            @Override
+            public void onClick(Object object) {
+                Intent intent = new Intent(MainActivity.this, FeedDetailActivity.class);
+                intent.putExtra(FeedDetailActivity.NEWS_ID, (long) object);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -73,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         channelTitle = intent.getStringExtra(CHANNEL_TITLE);
-        //Log.d(TAG, "channelTitle: " + channelTitle);
+        Log.d(TAG, "channelTitle: " + channelTitle);
         if (channelTitle == null)
             channelTitle = loadChannelTitle();
 
@@ -137,11 +160,28 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);}
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.d(TAG, "onActivityResult: ");
-        if (data == null) return;
-    }
+    SwipeRefreshLayout.OnRefreshListener swipeListener = new SwipeRefreshLayout.OnRefreshListener() {
 
+        @Override
+        public void onRefresh() {
+            Log.d(TAG, "onRefresh: start refreshing");
+            WorkManager workManager = WorkManager.getInstance();
+            Data data = new Data.Builder()
+                    .putString("channel_title", channelTitle)
+                    .build();
+            OneTimeWorkRequest doSyncRequest = new OneTimeWorkRequest.Builder(DoSyncWorker.class)
+                    .setInputData(data)
+                    .build();
+            // запускаем задачу
+            workManager.enqueue(doSyncRequest);
 
+            LiveData<WorkInfo> status = workManager.getWorkInfoByIdLiveData(doSyncRequest.getId());
+            status.observe(MainActivity.this, new Observer<WorkInfo>() {
+                @Override
+                public void onChanged(@Nullable WorkInfo workInfo) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        }
+    };
 }

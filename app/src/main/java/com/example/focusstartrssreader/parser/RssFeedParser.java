@@ -3,6 +3,7 @@ package com.example.focusstartrssreader.parser;
 import android.util.Log;
 import android.util.Xml;
 
+import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -84,8 +85,11 @@ public class RssFeedParser {
                 if (title != null && link != null && description != null && pubDate != null) {
 
                     if (isItem) {
-                        RssFeedModel item = new RssFeedModel(channelTitle, title, link, description, pubDate);
-                        items.add(item);
+                        if (!(RssFeedApp.getInstance().getFeedRepository()
+                                .findDuplicateRecordsInDatabase(link) > 0)) {
+                            RssFeedModel item = new RssFeedModel(channelTitle, title, link, description, pubDate);
+                            items.add(item);
+                        }
                     }
                     title = null;
                     link = null;
@@ -102,16 +106,12 @@ public class RssFeedParser {
             inputStream.close();
         }
 
-        for (RssFeedModel model : items) {
-            Log.d("parser", "*********************");
-            Log.d("parser", "model.channel_title: " + model.getChannelTitle());
-            Log.d("parser", "model.news_title: " + model.getTitle());
-            Log.d("parser", "*********************");
-        }
         return items;
     }
 
     public String parseFeedTitle(InputStream inputStream) throws IOException{
+
+        String TAG = "parseFeedTitle";
 
         String feedTitle = null;
 
@@ -119,6 +119,10 @@ public class RssFeedParser {
             XmlPullParser xmlPullParser = Xml.newPullParser();
             xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             xmlPullParser.setInput(inputStream, null);
+
+            xmlPullParser.next();
+            Log.d(TAG, "nag name: " + xmlPullParser.getName());
+            if (!(xmlPullParser.getName().equalsIgnoreCase("rss"))) throw new XmlPullParserException("It is not a news feed");
 
             boolean flag = true;
             while ( flag ) {

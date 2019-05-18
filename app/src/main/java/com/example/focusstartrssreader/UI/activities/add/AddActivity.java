@@ -16,6 +16,8 @@ import android.view.View;
 
 
 import com.example.focusstartrssreader.R;
+import com.example.focusstartrssreader.UI.activities.main.MainActivity;
+import com.example.focusstartrssreader.UI.adapters.Listener;
 import com.example.focusstartrssreader.UI.viewmodel.ChannelViewModel;
 import com.example.focusstartrssreader.UI.adapters.RssChannelsAdapter;
 import com.example.focusstartrssreader.domain.model.Channel;
@@ -38,6 +40,7 @@ public class AddActivity extends AppCompatActivity {
 
         initUI();
         subscribeActivityOnLiveData();
+
     }
 
     private void initToolbar() {
@@ -56,6 +59,19 @@ public class AddActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RssChannelsAdapter();
         recyclerView.setAdapter(recyclerViewAdapter);
+
+        // Реализация метода onClick() интерфейса RssChannelsAdapter.Listener
+        // запускает MainActivity, передавая ей заголовок канала,
+        // выбранного юзером из списка каналов
+        recyclerViewAdapter.setListener(new Listener() {
+            @Override
+            public void onClick(Object object) {
+                Intent intent = new Intent(AddActivity.this, MainActivity.class);
+                intent.putExtra(MainActivity.CHANNEL_TITLE, (String) object);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override

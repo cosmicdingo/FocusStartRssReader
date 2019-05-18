@@ -21,7 +21,7 @@
             android:id="@+id/newsTitleTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -29,7 +29,7 @@
             android:id="@+id/newsDateTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp"
             android:textStyle="italic" />
 
@@ -37,8 +37,9 @@
             android:id="@+id/newsDescriptionTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="fill" />
+            android:layout_marginTop="10dp"
+            android:gravity="fill"
+            android:textSize="15sp" />
 
     </LinearLayout>
 

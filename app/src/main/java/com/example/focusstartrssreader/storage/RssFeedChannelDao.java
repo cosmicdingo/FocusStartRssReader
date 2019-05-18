@@ -25,4 +25,7 @@ public interface RssFeedChannelDao {
 
     @Query("SELECT * FROM Channel")
     LiveData<List<Channel>> getAll();
+
+    @Query("SELECT channelLink FROM Channel WHERE channelTitle = :chTitle")
+    String getChannelLink(String chTitle);
 }

@@ -1,6 +1,5 @@
 package com.example.focusstartrssreader.UI.adapters;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.focusstartrssreader.UI.activities.detail.FeedDetailActivity;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
@@ -21,6 +19,8 @@ import java.util.List;
 public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHolder> {
 
     private List<RssFeedModel> rssFeedModels;
+
+    private Listener listener;
 
     public RssFeedAdapter() {
         this.rssFeedModels = new ArrayList<>();
@@ -38,6 +38,12 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
         }
     }
 
+
+    // Активность использует этот метод для регистрации
+    // себя в качестве слушателя
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
 
     // Метод onCreateViewHolder() вызывается, когда RecyclerView потребуется
     // новый экземпляр ViewHolder. RecyclerView многократно
@@ -64,23 +70,13 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
         final String pubDate = rssFeedModels.get(i).getPubDate();
         tvPubDate.setText(pubDate);
 
-        final String description = rssFeedModels.get(i).getDescription();
-
+        final long newsId = rssFeedModels.get(i).getId();
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // заполняем массив для оправки через интент в FeedDetailActivity
-                // для расширенного показа новости из ленты
-                // в массив кладем заголовок, дату публикации и содержание новости
-                ArrayList<String> newsFeedItem = new ArrayList<>(3);
-                newsFeedItem.trimToSize();
-                newsFeedItem.add(title);
-                newsFeedItem.add(pubDate);
-                newsFeedItem.add(description);
-
-                Intent intent = new Intent(cardView.getContext(), FeedDetailActivity.class);
-                intent.putStringArrayListExtra(FeedDetailActivity.EXTRA_NEWS_FEED_DESCRIPTION, newsFeedItem);
-                cardView.getContext().startActivity(intent);
+                if (listener != null) {
+                    listener.onClick(newsId);
+                }
             }
         });
     }

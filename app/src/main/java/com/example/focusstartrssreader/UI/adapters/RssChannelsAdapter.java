@@ -1,6 +1,5 @@
 package com.example.focusstartrssreader.UI.adapters;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.UI.activities.main.MainActivity;
 import com.example.focusstartrssreader.domain.model.Channel;
 
 import java.util.ArrayList;
@@ -20,9 +18,17 @@ public class RssChannelsAdapter extends RecyclerView.Adapter<RssChannelsAdapter.
 
     private List<Channel> channels;
 
+    private Listener listener;
+
     public RssChannelsAdapter() {
 
         this.channels = new ArrayList<>();
+    }
+
+    // Активность использует этот метод для регистрации
+    // себя в качестве слушателя
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 
     // Метод onCreateViewHolder() вызывается, когда RecyclerView потребуется
@@ -33,7 +39,7 @@ public class RssChannelsAdapter extends RecyclerView.Adapter<RssChannelsAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        // Получает объ ект LayoutInflater, который реобразует макет в CardView
+        // Получаем объект LayoutInflater, который преобразует макет в CardView
         CardView cardView = (CardView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.channels_cardview_item, viewGroup,false);
         return new ViewHolder(cardView);
     }
@@ -44,21 +50,17 @@ public class RssChannelsAdapter extends RecyclerView.Adapter<RssChannelsAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
-        final CardView cardView = viewHolder.cardView;
-        TextView tvTitleChannel = (TextView) cardView.findViewById(R.id.tvChannelTitle);
-        final String titleChannel = channels.get(i).getChannelTitle();
-        tvTitleChannel.setText(titleChannel);
-
-        /*TextView tvChannelLink = (TextView) cardView.findViewById(R.id.tvChannelLink);
-        String channelLink = channels.get(i).getChannelLink();
-        tvChannelLink.setText(channelLink);*/
+        CardView cardView = viewHolder.cardView;
+        TextView tvChannelTitle = (TextView) cardView.findViewById(R.id.tvChannelTitle);
+        final String channelTitle = channels.get(i).getChannelTitle();
+        tvChannelTitle.setText(channelTitle);
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(cardView.getContext(), MainActivity.class);
-                intent.putExtra(MainActivity.CHANNEL_TITLE, titleChannel);
-                cardView.getContext().startActivity(intent);
+                if(listener != null) {
+                    listener.onClick(channelTitle);
+                }
             }
         });
     }

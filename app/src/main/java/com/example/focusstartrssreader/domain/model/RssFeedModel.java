@@ -3,8 +3,7 @@ package com.example.focusstartrssreader.domain.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
-// Вспомогательный класс, содержащий заголовок, описание,
-// и ссылку элемента новостной ленты
+// класс, содержащий заголовок, описание и ссылку элемента новостной ленты
 @Entity
 public class RssFeedModel {
 

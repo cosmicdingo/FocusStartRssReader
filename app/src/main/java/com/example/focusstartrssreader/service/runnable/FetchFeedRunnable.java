@@ -26,7 +26,7 @@ public class FetchFeedRunnable implements Runnable {
         Log.d(TAG, "FetchFeedRunnable");
         // из application класса получает объект репозитория
         // добавляем канал и новостную ленту канала в бд
-        boolean success = RssFeedApp.getInstance().getFeedRepository().uploadData(title, urlLink);
+        boolean success = RssFeedApp.getInstance().getFeedRepository().insertChannelInDatabase(title, urlLink);
         // в методе onFinished отправляем broadcast в AddNewFeedActivity
         // в broadcast помещаем success
         finishListener.onFinished(success);
