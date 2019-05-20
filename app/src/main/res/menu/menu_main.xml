@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/action_settings_feed"
-        android:title="@string/add_settings_title"
+        android:title=""
         android:icon="@drawable/ic_settings_24dp"
         android:orderInCategory="2"
         app:showAsAction="always"/>

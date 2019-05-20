@@ -72,7 +72,7 @@ public class AddNewFeedActivity extends AppCompatActivity {
                         feedTitle = intent.getStringExtra(URL_FEED_TITLE_TAG);
                         //Log.d(TAG, "AddActivity: onReceive: title = " + feedTitle);
                         if (feedTitle == null)
-                            Toast.makeText(AddNewFeedActivity.this, "Invalid rss", Toast.LENGTH_LONG).show();
+                            Toast.makeText(AddNewFeedActivity.this, getString(R.string.unknown_source), Toast.LENGTH_LONG).show();
                         else {
                             cardView.setVisibility(View.VISIBLE);
                             TextView tv = (TextView) cardView.findViewById(R.id.tvChannelTitle);
@@ -82,9 +82,9 @@ public class AddNewFeedActivity extends AppCompatActivity {
                     case BROADCAST_FETCH_FEED_ACTION:
                         boolean success = intent.getBooleanExtra(FETCH_FEED_SUCCESS_TAG, false);
                         if(!(success))
-                            Toast.makeText(AddNewFeedActivity.this, "Connection error or the write error to the database", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddNewFeedActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
                         else {
-                            Toast.makeText(AddNewFeedActivity.this, "Done!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddNewFeedActivity.this, getString(R.string.feed_added), Toast.LENGTH_SHORT).show();
                         }
                         break;
                 }
@@ -114,7 +114,7 @@ public class AddNewFeedActivity extends AppCompatActivity {
         public void onClick(View v) {
             String tempRssFeedLink = rssFeedLinkEditText.getText().toString();
             if ( TextUtils.isEmpty(tempRssFeedLink) || !(rssFeedLink.equals(tempRssFeedLink)))
-                Toast.makeText(AddNewFeedActivity.this, "Invalid url", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddNewFeedActivity.this, getString(R.string.unknown_source), Toast.LENGTH_LONG).show();
             else {
                 progressBar.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(AddNewFeedActivity.this, FetchFeedService.class);
@@ -132,7 +132,7 @@ public class AddNewFeedActivity extends AppCompatActivity {
         public void onClick(View v) {
             rssFeedLink = rssFeedLinkEditText.getText().toString();
             if(TextUtils.isEmpty(rssFeedLink))
-                Toast.makeText(AddNewFeedActivity.this, "Invalid rss feed url", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddNewFeedActivity.this, getString(R.string.empty_input_field), Toast.LENGTH_SHORT).show();
             else {
                 progressBar.setVisibility(View.VISIBLE);
                 // Создаем Intent для вызова сервиса

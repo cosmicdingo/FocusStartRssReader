@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Rss Reader</string>
+    <string name="add_activity">Добавить</string>
+    <string name="add_new_feed_activity">Добавить канал</string>
+    <string name="settings_activity">Настройки</string>
+    <string name="rss_feed_btn">Получить</string>
+    <string name="text_input_layout_hint">Адрес ленты</string>
+
+    <string name="pref_title_auto_back_sync">Автообновление</string>
+    <string name="pref_title_sync_frequency">Интервал</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 минут</item>
+        <item>30 минут</item>
+        <item>1 час</item>
+        <item>2 часа</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+    </string-array>
+
+    <!--
+    <string name="pref_sync_frequency_default_value">2 hours</string>
+    -->
+
+    <string name="connection_error">Ошибка при подключении</string>
+    <string name="feed_added">Канал добавлен!</string>
+    
+    <string name="unknown_source">Неизвестный источник</string>
+    <string name="empty_input_field">Введите ссылку на ресурс</string>
+</resources>

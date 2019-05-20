@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="sync_interval">
-        <item>15 mins</item>
-        <item>30 mins</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
-    </string-array>
-</resources>

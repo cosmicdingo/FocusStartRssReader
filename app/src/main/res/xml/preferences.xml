@@ -7,16 +7,16 @@
     <SwitchPreference
         android:defaultValue="false"
         android:key="auto_sync_key"
-        android:title="@string/auto_back_sync"
+        android:title="@string/pref_title_auto_back_sync"
         app:iconSpaceReserved="false" />
 
     <ListPreference
-        android:entries="@array/sync_interval"
-        android:entryValues="@array/sync_interval"
+        android:entries="@array/pref_sync_frequency_titles"
+        android:entryValues="@array/pref_sync_frequency_values"
         android:key="sync_interval_key"
-        android:title="@string/sync_interval"
+        android:title="@string/pref_title_sync_frequency"
         android:persistent="true"
-        android:defaultValue="2 hours"
+        android:defaultValue="@string/pref_sync_frequency_default_value"
         android:dependency="auto_sync_key"
         app:iconSpaceReserved="false" />
 
