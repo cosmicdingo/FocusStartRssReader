@@ -7,7 +7,9 @@ public class SelectedNews {
 
     private String title;
     private String description;
-    private String pubDate;
+    //private String pubDate;
+
+    private long millis;
 
     public String getTitle() {
         return title;
@@ -17,9 +19,9 @@ public class SelectedNews {
         return description;
     }
 
-    public String getPubDate() {
+    /*public String getPubDate() {
         return pubDate;
-    }
+    }*/
 
     public void setTitle(String title) {
         this.title = title;
@@ -29,7 +31,16 @@ public class SelectedNews {
         this.description = description;
     }
 
-    public void setPubDate(String pubDate) {
+    /*public void setPubDate(String pubDate) {
         this.pubDate = pubDate;
+    }*/
+
+    public long getMillis() {
+        return millis;
     }
+
+    public void setMillis(long millis) {
+        this.millis = millis;
+    }
+
 }

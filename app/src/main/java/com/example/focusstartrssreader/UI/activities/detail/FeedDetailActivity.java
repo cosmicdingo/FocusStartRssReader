@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.example.focusstartrssreader.DateConverter;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.SelectedNews;
@@ -51,7 +52,7 @@ public class FeedDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable SelectedNews selectedNews) {
                 newsTitleTV.setText(selectedNews.getTitle());
-                newsDateTV.setText(selectedNews.getPubDate());
+                newsDateTV.setText(DateConverter.timeToDate(selectedNews.getMillis()));
                 newsDescriptionTV.setText(selectedNews.getDescription());
             }
         });

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String TAG = "MainActivity TAG";
     public final static String CHANNEL_TITLE = "channel title";
 
-    String channelTitle;// = "";
+    String channelTitle;
 
     private RecyclerView recyclerView;
     private RssFeedAdapter adapter;

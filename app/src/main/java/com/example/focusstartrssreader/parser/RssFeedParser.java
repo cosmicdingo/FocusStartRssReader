@@ -3,6 +3,7 @@ package com.example.focusstartrssreader.parser;
 import android.util.Log;
 import android.util.Xml;
 
+import com.example.focusstartrssreader.DateConverter;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
@@ -11,11 +12,14 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RssFeedParser {
 
+    private static final String TAG = "date_converter";
     private static final String XML_PULL_PARSER_EXCEPTION = "XmlPullParserException";
 
     //Парсинг RSS ленты
@@ -87,7 +91,11 @@ public class RssFeedParser {
                     if (isItem) {
                         if (!(RssFeedApp.getInstance().getFeedRepository()
                                 .findDuplicateRecordsInDatabase(link) > 0)) {
-                            RssFeedModel item = new RssFeedModel(channelTitle, title, link, description, pubDate);
+
+                            long millis = DateConverter.dateToTime(pubDate);
+                            Log.d(TAG, "date to time: date in millis = " + millis);
+                            Log.d(TAG, "date to string: date = " + DateConverter.timeToDate(millis));
+                            RssFeedModel item = new RssFeedModel(channelTitle, title, link, description, millis);
                             items.add(item);
                         }
                     }

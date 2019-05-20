@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.focusstartrssreader.DateConverter;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
@@ -67,7 +68,7 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
         tvTitle.setText(title);
 
         TextView tvPubDate = (TextView) cardView.findViewById(R.id.tvPubDate);
-        final String pubDate = rssFeedModels.get(i).getPubDate();
+        final String pubDate = DateConverter.timeToDate(rssFeedModels.get(i).getMillis());
         tvPubDate.setText(pubDate);
 
         final long newsId = rssFeedModels.get(i).getId();

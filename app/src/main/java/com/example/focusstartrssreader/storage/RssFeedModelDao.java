@@ -29,9 +29,9 @@ public interface RssFeedModelDao {
     @Query("SELECT * FROM RssFeedModel")
     List<RssFeedModel> getAll();
 
-    @Query("SELECT title, description, pubDate FROM RssFeedModel WHERE id = :ID")
+    @Query("SELECT title, description, millis FROM RssFeedModel WHERE id = :ID")
     LiveData<SelectedNews> getSelectedNews(long ID);
 
-    @Query("SELECT * FROM RssFeedModel WHERE channelTitle = :chTitle")
+    @Query("SELECT * FROM RssFeedModel WHERE channelTitle = :chTitle ORDER BY millis DESC")
     LiveData<List<RssFeedModel>> getChannelNewsFeed(String chTitle);
 }
