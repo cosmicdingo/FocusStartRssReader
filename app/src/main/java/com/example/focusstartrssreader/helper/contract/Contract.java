@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.helper;
+package com.example.focusstartrssreader.helper.contract;
 
 import android.content.Context;
 import android.content.Intent;

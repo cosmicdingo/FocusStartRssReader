@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.example.focusstartrssreader.helper.Contract;
+import com.example.focusstartrssreader.helper.contract.Contract;
 import com.example.focusstartrssreader.service.listener.OnFinishListener;
 import com.example.focusstartrssreader.service.runnable.FetchFeedRunnable;
 import com.example.focusstartrssreader.service.runnable.FetchFeedTitleRunnable;

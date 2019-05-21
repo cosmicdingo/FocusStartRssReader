@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.example.focusstartrssreader.helper.Contract;
+import com.example.focusstartrssreader.helper.contract.Contract;
 import com.example.focusstartrssreader.helper.converter.DateConverter;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.RssFeedApp;
@@ -34,7 +34,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
@@ -43,9 +43,9 @@ public class FeedDetailActivity extends AppCompatActivity {
 
     private void initUI() {
 
-        newsTitleTV = (TextView) findViewById(R.id.newsTitleTV);
-        newsDateTV = (TextView) findViewById(R.id.newsDateTV);
-        newsDescriptionTV = (TextView) findViewById(R.id.newsDescriptionTV);
+        newsTitleTV = findViewById(R.id.newsTitleTV);
+        newsDateTV = findViewById(R.id.newsDateTV);
+        newsDescriptionTV = findViewById(R.id.newsDescriptionTV);
 
         long ID = getIntent().getLongExtra(Contract.NEWS_ID, 0);
         LiveData<SelectedNews> selectedNewsLiveData = RssFeedApp.getInstance().getFeedRepository().getSelectedNews(ID);

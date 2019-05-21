@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.example.focusstartrssreader.helper.Contract;
+import com.example.focusstartrssreader.helper.contract.Contract;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.worker.AutoBackgroundSyncWorker;
 

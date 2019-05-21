@@ -2,10 +2,9 @@ package com.example.focusstartrssreader.network;
 
 import android.util.Log;
 
-import com.example.focusstartrssreader.helper.Contract;
+import com.example.focusstartrssreader.helper.contract.Contract;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;

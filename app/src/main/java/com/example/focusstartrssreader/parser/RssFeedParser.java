@@ -3,7 +3,7 @@ package com.example.focusstartrssreader.parser;
 import android.util.Log;
 import android.util.Xml;
 
-import com.example.focusstartrssreader.helper.Contract;
+import com.example.focusstartrssreader.helper.contract.Contract;
 import com.example.focusstartrssreader.helper.converter.DateConverter;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
@@ -112,7 +112,6 @@ public class RssFeedParser {
             xmlPullParser.setInput(inputStream, null);
 
             xmlPullParser.next();
-            //Log.d(TAG, "nag name: " + xmlPullParser.getName());
             if (!(xmlPullParser.getName().equalsIgnoreCase("rss"))) throw new XmlPullParserException("It is not a news feed");
 
             boolean flag = true;
