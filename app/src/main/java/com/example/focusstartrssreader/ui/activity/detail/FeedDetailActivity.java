@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.activities.detail;
+package com.example.focusstartrssreader.ui.activity.detail;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
@@ -9,7 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.example.focusstartrssreader.DateConverter;
+import com.example.focusstartrssreader.helper.Contract;
+import com.example.focusstartrssreader.helper.converter.DateConverter;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.SelectedNews;
@@ -17,7 +18,7 @@ import com.example.focusstartrssreader.domain.model.SelectedNews;
 
 public class FeedDetailActivity extends AppCompatActivity {
 
-    public final static String NEWS_ID = "news_id";
+    //public final static String NEWS_ID = "news_id";
 
     private TextView newsTitleTV;
     private TextView newsDateTV;
@@ -46,14 +47,18 @@ public class FeedDetailActivity extends AppCompatActivity {
         newsDateTV = (TextView) findViewById(R.id.newsDateTV);
         newsDescriptionTV = (TextView) findViewById(R.id.newsDescriptionTV);
 
-        long ID = getIntent().getLongExtra(NEWS_ID, 0);
+        long ID = getIntent().getLongExtra(Contract.NEWS_ID, 0);
         LiveData<SelectedNews> selectedNewsLiveData = RssFeedApp.getInstance().getFeedRepository().getSelectedNews(ID);
         selectedNewsLiveData.observe(this, new Observer<SelectedNews>() {
             @Override
             public void onChanged(@Nullable SelectedNews selectedNews) {
-                newsTitleTV.setText(selectedNews.getTitle());
-                newsDateTV.setText(DateConverter.timeToDate(selectedNews.getMillis()));
-                newsDescriptionTV.setText(selectedNews.getDescription());
+                try {
+                    newsTitleTV.setText(selectedNews.getTitle());
+                    newsDateTV.setText(DateConverter.timeToDate(selectedNews.getMillis()));
+                    newsDescriptionTV.setText(selectedNews.getDescription());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

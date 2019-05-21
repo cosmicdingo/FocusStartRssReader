@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.activities.settings;
+package com.example.focusstartrssreader.ui.activity.settings;
 
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;

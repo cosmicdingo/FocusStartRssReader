@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.activities.settings;
+package com.example.focusstartrssreader.ui.activity.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.example.focusstartrssreader.helper.Contract;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.worker.AutoBackgroundSyncWorker;
 
@@ -19,7 +20,6 @@ import androidx.work.WorkManager;
 public class SettingsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "settings";
-    private final String REQUEST_SYNC_TAG = "sync";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,10 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         initToolbar();
 
         setupSharedPreference();
-
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
@@ -45,38 +44,41 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
-    private void loadSyncIntervalFromPreference(SharedPreferences sharedPreferences) {
-        changeSyncInterval(sharedPreferences.getString("sync_interval_key", "2 hours"));
+    private void loadSyncFrequencyFromPreference(SharedPreferences sharedPreferences) {
+        String syncFreqKeyValue = sharedPreferences.getString("sync_frequency_key", getString(R.string.pref_sync_frequency_default_value));
+        if (syncFreqKeyValue != null)
+            changeSyncFrequency(syncFreqKeyValue);
     }
 
 
-    private void changeSyncInterval(String sync_interval_key_value) {
-        switch (sync_interval_key_value)
+    private void changeSyncFrequency(String sync_frequency_key_value) {
+        switch (sync_frequency_key_value)
         {
-            case "15 mins":
-                Log.d(TAG, "changeSyncInterval: " + sync_interval_key_value);
+            case "15":
+                Log.d(TAG, "changeSyncFrequency: " + sync_frequency_key_value);
                 startWorkAutoBackSync(15);
                 break;
-            case "30 mins":
-                Log.d(TAG, "changeSyncInterval: " + sync_interval_key_value);
+            case "30":
+                Log.d(TAG, "changeSyncFrequency: " + sync_frequency_key_value);
                 startWorkAutoBackSync(30);
                 break;
-            case "1 hour":
-                Log.d(TAG, "changeSyncInterval: " + sync_interval_key_value);
+            case "60":
+                Log.d(TAG, "changeSyncFrequency: " + sync_frequency_key_value);
                 startWorkAutoBackSync(60);
                 break;
-            case "2 hours":
-                Log.d(TAG, "changeSyncInterval: " + sync_interval_key_value);
+            case "120":
+                Log.d(TAG, "changeSyncFrequency: " + sync_frequency_key_value);
                 startWorkAutoBackSync(120);
                 break;
         }
     }
 
     private void startWorkAutoBackSync(long repeatInterval) {
-        WorkManager.getInstance().cancelAllWorkByTag(REQUEST_SYNC_TAG);
+        WorkManager.getInstance().cancelAllWorkByTag(Contract.REQUEST_SYNC_TAG);
         PeriodicWorkRequest backSyncPeriodicWorkRequest = new PeriodicWorkRequest.Builder(AutoBackgroundSyncWorker.class, repeatInterval, TimeUnit.MINUTES)
-                .addTag(REQUEST_SYNC_TAG)
+                .addTag(Contract.REQUEST_SYNC_TAG)
                 .build();
+        WorkManager.getInstance().enqueue(backSyncPeriodicWorkRequest);
     }
 
     @Override
@@ -86,24 +88,19 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
                 boolean isEnableSync = sharedPreferences.getBoolean("auto_sync_key", false);
                 Log.d(TAG, "Auto background sync: " + isEnableSync);
                 if (isEnableSync) {
-                    changeSyncInterval(sharedPreferences.getString("sync_interval_key", "2 hours"));
+                    String syncFreqKeyValue = sharedPreferences.getString("sync_frequency_key", getString(R.string.pref_sync_frequency_default_value));
+                    if (syncFreqKeyValue != null)
+                        changeSyncFrequency(syncFreqKeyValue);
                 }
                 else {
-                    WorkManager.getInstance().cancelAllWorkByTag(REQUEST_SYNC_TAG);
+                    WorkManager.getInstance().cancelAllWorkByTag(Contract.REQUEST_SYNC_TAG);
                 }
                 break;
-            case "sync_interval_key":
-                loadSyncIntervalFromPreference(sharedPreferences);
+            case "sync_frequency_key":
+                loadSyncFrequencyFromPreference(sharedPreferences);
                 break;
         }
     }
-
-    /*private void startWorkAutoBackSync() {
-        OneTimeWorkRequest autoBackSyncRequest = new OneTimeWorkRequest.Builder(DoSyncWorker.class).build();
-        // запускаем задачу
-        WorkManager.getInstance().enqueue(autoBackSyncRequest);
-    }*/
-
 
     @Override
     protected void onDestroy() {

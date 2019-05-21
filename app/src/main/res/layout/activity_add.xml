@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UI.activities.add.AddActivity">
+    tools:context=".ui.activity.add.AddActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -39,6 +39,6 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_24dp"
         android:onClick="onClickAddNewFeed"
-        app:layout_behavior="com.example.focusstartrssreader.UI.scrollingfabbehavior.ScrollingFABBehavior"/>
+        app:layout_behavior="com.example.focusstartrssreader.ui.scrollingfabbehavior.ScrollingFABBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

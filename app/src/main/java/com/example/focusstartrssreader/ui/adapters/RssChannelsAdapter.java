@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.adapters;
+package com.example.focusstartrssreader.ui.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -51,7 +51,7 @@ public class RssChannelsAdapter extends RecyclerView.Adapter<RssChannelsAdapter.
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
         CardView cardView = viewHolder.cardView;
-        TextView tvChannelTitle = (TextView) cardView.findViewById(R.id.tvChannelTitle);
+        TextView tvChannelTitle = cardView.findViewById(R.id.tvChannelTitle);
         final String channelTitle = channels.get(i).getChannelTitle();
         tvChannelTitle.setText(channelTitle);
 

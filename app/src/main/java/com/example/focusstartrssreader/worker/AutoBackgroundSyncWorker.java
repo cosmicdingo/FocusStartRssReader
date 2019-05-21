@@ -14,7 +14,7 @@ import androidx.work.WorkerParameters;
 
 public class AutoBackgroundSyncWorker extends Worker {
 
-    static final String TAG = "workmng";
+    static final String TAG = "AutoBackSyncWorker";
 
     public AutoBackgroundSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);

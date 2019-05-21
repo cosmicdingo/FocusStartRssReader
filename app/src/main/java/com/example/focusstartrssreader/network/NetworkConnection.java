@@ -2,6 +2,8 @@ package com.example.focusstartrssreader.network;
 
 import android.util.Log;
 
+import com.example.focusstartrssreader.helper.Contract;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -11,16 +13,12 @@ import java.net.URLConnection;
 
 public class NetworkConnection {
 
-    private static final String MALFORMED_URL_EXCEPTION = "MalformedUrlException";
-    private static final String IO_EXCEPTION = "IOException";
-
     public HttpURLConnection getHttpConnection(String urlString) {
 
         if(!urlString.startsWith("http://") && !urlString.startsWith("https://"))
             urlString = "http://" + urlString;
 
         HttpURLConnection httpConn = null;
-        //InputStream inputStream = null;
 
         try {
             URL url = new URL(urlString);
@@ -31,24 +29,13 @@ public class NetworkConnection {
 
             httpConn = (HttpURLConnection) conn;
             httpConn.setRequestMethod("GET");
-            /*httpConn.connect(); // попытка соединения с сервером
-            int response = httpConn.getResponseCode(); // код ответа от сервера
-            if (response == HttpURLConnection.HTTP_OK) {
-                return httpConn;
-                //inputStream = httpConn.getInputStream();
-            }*/
         }
         catch (MalformedURLException ex) {
-            Log.d(MALFORMED_URL_EXCEPTION, ex.getMessage());
+            Log.d(Contract.MALFORMED_URL_EXCEPTION, ex.getMessage());
         }
         catch (IOException ex) {
-            Log.d(IO_EXCEPTION, ex.getMessage());
+            Log.d(Contract.IO_EXCEPTION, ex.getMessage());
         }
-        /*finally {
-            httpConn.disconnect();
-        }*/
-        Log.d("getInputStream", "on getInputStream");
-        //return inputStream;
         return httpConn;
     }
 }

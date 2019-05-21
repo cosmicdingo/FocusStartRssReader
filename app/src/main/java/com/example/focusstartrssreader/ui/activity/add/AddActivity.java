@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.activities.add;
+package com.example.focusstartrssreader.ui.activity.add;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -15,11 +15,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 
+import com.example.focusstartrssreader.helper.Contract;
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.UI.activities.main.MainActivity;
-import com.example.focusstartrssreader.UI.adapters.Listener;
-import com.example.focusstartrssreader.UI.viewmodel.ChannelViewModel;
-import com.example.focusstartrssreader.UI.adapters.RssChannelsAdapter;
+import com.example.focusstartrssreader.ui.adapters.Listener;
+import com.example.focusstartrssreader.ui.viewmodel.ChannelViewModel;
+import com.example.focusstartrssreader.ui.adapters.RssChannelsAdapter;
 import com.example.focusstartrssreader.domain.model.Channel;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
@@ -55,7 +55,7 @@ public class AddActivity extends AppCompatActivity {
 
         initToolbar();
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new RssChannelsAdapter();
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -66,9 +66,7 @@ public class AddActivity extends AppCompatActivity {
         recyclerViewAdapter.setListener(new Listener() {
             @Override
             public void onClick(Object object) {
-                Intent intent = new Intent(AddActivity.this, MainActivity.class);
-                intent.putExtra(MainActivity.CHANNEL_TITLE, (String) object);
-                startActivity(intent);
+                startActivity(Contract.getIntentForMainActivityStart(AddActivity.this, (String) object));
                 finish();
             }
         });
@@ -100,9 +98,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     protected void onClickAddNewFeed(View view) {
-        //startActivityForResult(new Intent(this, AddNewFeedActivity.class),1);
         Intent intent = new Intent(this, AddNewFeedActivity.class);
         startActivity(intent);
-        //finish();
     }
 }

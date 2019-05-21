@@ -13,7 +13,7 @@
     <ListPreference
         android:entries="@array/pref_sync_frequency_titles"
         android:entryValues="@array/pref_sync_frequency_values"
-        android:key="sync_interval_key"
+        android:key="sync_frequency_key"
         android:title="@string/pref_title_sync_frequency"
         android:persistent="true"
         android:defaultValue="@string/pref_sync_frequency_default_value"

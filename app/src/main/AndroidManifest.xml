@@ -14,21 +14,49 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".UI.activities.add.AddNewFeedActivity"
+            android:name=".ui.activity.add.AddNewFeedActivity"
             android:label="@string/add_new_feed_activity"
-            android:parentActivityName=".UI.activities.add.AddActivity" />
+            android:parentActivityName=".ui.activity.add.AddActivity">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW"/>
+
+                    <category android:name="android.intent.category.BROWSABLE"/>
+                    <category android:name="android.intent.category.DEFAULT"/>
+
+                    <data android:scheme="https"/>
+                    <data android:scheme="http"/>
+                    <data android:host="*"/>
+                    <data android:pathPattern=".*xml.*"/>
+                    <data android:pathPattern=".*feed.*"/>
+                    <data android:pathPattern=".*rss.*"/>
+                    <data android:pathPattern=".*news.*"/>
+
+                    <data
+                        android:host="news.google.com"
+                        android:pathPattern="/.*/.*rss"
+                        android:scheme="https" />
+
+                    <data
+                        android:scheme="https"
+                        android:host="news.yandex.ru"
+                        android:pathPattern="/.*.rss" />
+
+                </intent-filter>
+        </activity>
         <activity
-            android:name=".UI.activities.detail.FeedDetailActivity"
-            android:parentActivityName=".UI.activities.main.MainActivity" />
+            android:name=".ui.activity.detail.FeedDetailActivity"
+            android:parentActivityName=".ui.activity.main.MainActivity" />
         <activity
-            android:name=".UI.activities.add.AddActivity"
+            android:name=".ui.activity.add.AddActivity"
             android:label="@string/add_activity"
-            android:parentActivityName=".UI.activities.main.MainActivity" />
+            android:parentActivityName=".ui.activity.main.MainActivity" />
         <activity
-            android:name=".UI.activities.settings.SettingsActivity"
+            android:name=".ui.activity.settings.SettingsActivity"
             android:label="@string/settings_activity"
-            android:parentActivityName=".UI.activities.main.MainActivity" />
-        <activity android:name=".UI.activities.main.MainActivity">
+            android:parentActivityName=".ui.activity.main.MainActivity" />
+        <activity
+            android:name=".ui.activity.main.MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

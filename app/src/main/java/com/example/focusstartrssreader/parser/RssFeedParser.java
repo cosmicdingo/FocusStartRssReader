@@ -3,7 +3,8 @@ package com.example.focusstartrssreader.parser;
 import android.util.Log;
 import android.util.Xml;
 
-import com.example.focusstartrssreader.DateConverter;
+import com.example.focusstartrssreader.helper.Contract;
+import com.example.focusstartrssreader.helper.converter.DateConverter;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
@@ -12,15 +13,10 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class RssFeedParser {
-
-    private static final String TAG = "date_converter";
-    private static final String XML_PULL_PARSER_EXCEPTION = "XmlPullParserException";
 
     //Парсинг RSS ленты
     public List<RssFeedModel> parseFeed(InputStream inputStream, String channelTitle) throws IOException {
@@ -34,16 +30,8 @@ public class RssFeedParser {
 
         try {
             XmlPullParser xmlPullParser = Xml.newPullParser();
-            // FEATURE_PROCESS_NAMESPACES определяет, как будет парситься пространство имен XML
-            // Если задано false, пространства имен XML не будут обрабатываться
-            // и будут рассматриваться как обычные атрибуты
             xmlPullParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             xmlPullParser.setInput(inputStream, null);
-
-            // nextTag() вызывает next() и возвращает элемент,
-            // если это START_TAG или END_TAG, иначе вызывает исключение
-            // next() возвращает след элемент
-            //xmlPullParser.nextTag();
 
             while (xmlPullParser.next() != xmlPullParser.END_DOCUMENT) {
                 // получаем тип текущего элемента (START_TAG, END_TAG, TEXT)
@@ -68,7 +56,6 @@ public class RssFeedParser {
                     }
                 }
 
-                //Log.d("XmlParser", "Parsing name = " + name);
 
                 String result = "";
                 if (xmlPullParser.next() == XmlPullParser.TEXT) {
@@ -76,39 +63,35 @@ public class RssFeedParser {
                     xmlPullParser.nextTag();
                 }
 
-                if (name.equalsIgnoreCase("title")) {
+                if (name.equalsIgnoreCase("title") && isItem) {
                     title = result;
-                } else if (name.equalsIgnoreCase("link")) {
+                } else if (name.equalsIgnoreCase("link") && isItem) {
                     link = result;
-                } else if (name.equalsIgnoreCase("description")) {
+                } else if (name.equalsIgnoreCase("description") && isItem) {
                     description = result.replaceAll("\\<.*?\\>", "").replaceAll("\n", " ");
-                } else if (name.equalsIgnoreCase("pubDate")) {
+                } else if (name.equalsIgnoreCase("pubDate") && isItem) {
                     pubDate = result;
                 }
 
-                if (title != null && link != null && description != null && pubDate != null) {
-
-                    if (isItem) {
+                if (title != null && link != null && description != null && pubDate != null){
                         if (!(RssFeedApp.getInstance().getFeedRepository()
                                 .findDuplicateRecordsInDatabase(link) > 0)) {
 
                             long millis = DateConverter.dateToTime(pubDate);
-                            Log.d(TAG, "date to time: date in millis = " + millis);
-                            Log.d(TAG, "date to string: date = " + DateConverter.timeToDate(millis));
                             RssFeedModel item = new RssFeedModel(channelTitle, title, link, description, millis);
                             items.add(item);
                         }
-                    }
-                    title = null;
-                    link = null;
-                    description = null;
-                    pubDate = null;
-                    isItem = false;
+
+                         title = null;
+                         link = null;
+                         description = null;
+                         pubDate = null;
+                         isItem = false;
                 }
             }
         }
         catch (XmlPullParserException ex) {
-            Log.d(XML_PULL_PARSER_EXCEPTION, ex.getMessage());
+            Log.d(Contract.XML_PULL_PARSER_EXCEPTION, ex.getMessage());
         }
         finally {
             inputStream.close();
@@ -119,7 +102,7 @@ public class RssFeedParser {
 
     public String parseFeedTitle(InputStream inputStream) throws IOException{
 
-        String TAG = "parseFeedTitle";
+        //String TAG = "parseFeedTitle";
 
         String feedTitle = null;
 
@@ -129,7 +112,7 @@ public class RssFeedParser {
             xmlPullParser.setInput(inputStream, null);
 
             xmlPullParser.next();
-            Log.d(TAG, "nag name: " + xmlPullParser.getName());
+            //Log.d(TAG, "nag name: " + xmlPullParser.getName());
             if (!(xmlPullParser.getName().equalsIgnoreCase("rss"))) throw new XmlPullParserException("It is not a news feed");
 
             boolean flag = true;
@@ -141,7 +124,7 @@ public class RssFeedParser {
                 }
             }
         } catch (XmlPullParserException ex) {
-            Log.d(XML_PULL_PARSER_EXCEPTION, ex.getMessage());
+            Log.d(Contract.XML_PULL_PARSER_EXCEPTION, ex.getMessage());
         }
         finally {
             inputStream.close();

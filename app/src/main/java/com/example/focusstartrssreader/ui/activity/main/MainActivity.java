@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.UI.activities.main;
+package com.example.focusstartrssreader.ui.activity.main;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
@@ -12,32 +12,25 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.focusstartrssreader.helper.Contract;
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.UI.activities.add.AddActivity;
-import com.example.focusstartrssreader.UI.activities.detail.FeedDetailActivity;
-import com.example.focusstartrssreader.UI.activities.settings.SettingsActivity;
-import com.example.focusstartrssreader.UI.adapters.Listener;
-import com.example.focusstartrssreader.UI.adapters.RssFeedAdapter;
-import com.example.focusstartrssreader.UI.viewmodel.RssFeedViewModel;
+import com.example.focusstartrssreader.ui.activity.add.AddActivity;
+import com.example.focusstartrssreader.ui.activity.settings.SettingsActivity;
+import com.example.focusstartrssreader.ui.adapters.Listener;
+import com.example.focusstartrssreader.ui.adapters.RssFeedAdapter;
+import com.example.focusstartrssreader.ui.viewmodel.RssFeedViewModel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
-import com.example.focusstartrssreader.worker.DoSyncWorker;
-
 
 import java.util.List;
 
-import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 public class MainActivity extends AppCompatActivity {
-
-    public final static String TAG = "MainActivity TAG";
-    public final static String CHANNEL_TITLE = "channel title";
 
     String channelTitle;
 
@@ -79,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setListener(new Listener() {
             @Override
             public void onClick(Object object) {
-                Intent intent = new Intent(MainActivity.this, FeedDetailActivity.class);
-                intent.putExtra(FeedDetailActivity.NEWS_ID, (long) object);
-                startActivity(intent);
+                startActivity(Contract.getIntent(MainActivity.this, (long) object));
             }
         });
     }
@@ -95,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
     private void onCreateViewModel() {
 
         Intent intent = getIntent();
-        channelTitle = intent.getStringExtra(CHANNEL_TITLE);
-        Log.d(TAG, "channelTitle: " + channelTitle);
+        channelTitle = intent.getStringExtra(Contract.CHANNEL_TITLE);
         if (channelTitle == null)
             channelTitle = loadChannelTitle();
 
+        setTitle(channelTitle);
         feedViewModel = ViewModelProviders.of(this).get(RssFeedViewModel.class);
         feedViewModel.getChannelFeed(channelTitle).observe(this, new Observer<List<RssFeedModel>>() {
             @Override
@@ -112,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
 
     private String loadChannelTitle() {
         preferences = getPreferences(MODE_PRIVATE);
-        return preferences.getString(CHANNEL_TITLE, "");
+        return preferences.getString(Contract.CHANNEL_TITLE, "");
     }
 
     private void saveChannelTitle() {
         if (channelTitle != null) {
             preferences = getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(CHANNEL_TITLE, channelTitle);
+            editor.putString(Contract.CHANNEL_TITLE, channelTitle);
             editor.commit();
         }
     }
@@ -149,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // запускам активити добавления rss-канала
             case R.id.action_add_feed:
-                //startActivityForResult(new Intent(this, AddActivity.class),1);
                 startActivity(new Intent(this, AddActivity.class));
                 return true;
             // настройки приложения
@@ -164,18 +154,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onRefresh() {
-            Log.d(TAG, "onRefresh: start refreshing");
-            WorkManager workManager = WorkManager.getInstance();
-            Data data = new Data.Builder()
-                    .putString("channel_title", channelTitle)
-                    .build();
-            OneTimeWorkRequest doSyncRequest = new OneTimeWorkRequest.Builder(DoSyncWorker.class)
-                    .setInputData(data)
-                    .build();
+            OneTimeWorkRequest doSyncRequest = Contract.getOneTimeWorkRequest(channelTitle);
             // запускаем задачу
-            workManager.enqueue(doSyncRequest);
+            WorkManager.getInstance().enqueue(doSyncRequest);
 
-            LiveData<WorkInfo> status = workManager.getWorkInfoByIdLiveData(doSyncRequest.getId());
+            LiveData<WorkInfo> status = WorkManager.getInstance().getWorkInfoByIdLiveData(doSyncRequest.getId());
             status.observe(MainActivity.this, new Observer<WorkInfo>() {
                 @Override
                 public void onChanged(@Nullable WorkInfo workInfo) {
