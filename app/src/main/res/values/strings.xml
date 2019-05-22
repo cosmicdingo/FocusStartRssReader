@@ -7,6 +7,10 @@
     <string name="rss_feed_btn">Fetch</string>
     <string name="text_input_layout_hint">Rss feed source</string>
 
+    <string name="pref_category_sync">Synchronization</string>
+    <string name="pref_category_notification">Notification</string>
+    <string name="pref_category_theme">Theme</string>
+
     <string name="pref_title_auto_back_sync">Auto background sync</string>
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">
@@ -22,11 +26,25 @@
         <item>120</item>
     </string-array>
 
+    <string name="pref_notification">Notification</string>
+    <string name="pref_theme">Theme</string>
+    <string-array name="pref_theme_titles">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    <string-array name="pref_theme_values">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
     <string name="pref_sync_frequency_default_value" translatable="false">2 hours</string>
+    <string name="pref_theme_default_value">Light</string>
 
     <string name="connection_error">Connection error or the write error to the database</string>
     <string name="feed_added">Done!</string>
 
     <string name="unknown_source">Unknown source</string>
     <string name="empty_input_field">Enter the link</string>
+    <string name="notif_content_text">Click for view</string>
+    <string name="notification_title">new article(s)</string>
 </resources>

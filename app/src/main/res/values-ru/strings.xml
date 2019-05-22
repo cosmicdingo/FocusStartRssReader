@@ -3,8 +3,13 @@
     <string name="add_activity">Добавить</string>
     <string name="add_new_feed_activity">Добавить канал</string>
     <string name="settings_activity">Настройки</string>
+
     <string name="rss_feed_btn">Найти</string>
     <string name="text_input_layout_hint">Адрес ленты</string>
+
+    <string name="pref_category_sync">Синхронизация</string>
+    <string name="pref_category_notification">Уведомления</string>
+    <string name="pref_category_theme">Тема</string>
 
     <string name="pref_title_auto_back_sync">Автообновление</string>
     <string name="pref_title_sync_frequency">Интервал</string>
@@ -21,9 +26,24 @@
         <item>120</item>
     </string-array>
 
+    <string name="pref_notification">Уведомления</string>
+    <string name="pref_theme">Тема</string>
+    <string-array name="pref_theme_titles">
+        <item>Светлая</item>
+        <item>Темная</item>
+    </string-array>
+    <string-array name="pref_theme_values">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
+    <string name="pref_theme_default_value">Светлая</string>
+
     <string name="connection_error">Ошибка при подключении</string>
     <string name="feed_added">Канал добавлен!</string>
 
     <string name="unknown_source">Неизвестный источник</string>
     <string name="empty_input_field">Введите ссылку на ресурс</string>
+    <string name="notif_content_text">Нажмите для просмотра</string>
+    <string name="notification_title">новых(ая) новостей(ть)</string>
 </resources>

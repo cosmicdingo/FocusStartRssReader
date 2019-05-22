@@ -15,7 +15,6 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activity.add.AddNewFeedActivity"
-            android:label="@string/add_new_feed_activity"
             android:parentActivityName=".ui.activity.add.AddActivity">
                 <intent-filter>
                     <action android:name="android.intent.action.VIEW"/>

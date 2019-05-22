@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import com.example.focusstartrssreader.helper.contract.Contract;
 import com.example.focusstartrssreader.R;
@@ -45,29 +44,25 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     }
 
     private void loadSyncFrequencyFromPreference(SharedPreferences sharedPreferences) {
-        String syncFreqKeyValue = sharedPreferences.getString("sync_frequency_key", getString(R.string.pref_sync_frequency_default_value));
+        String syncFreqKeyValue = sharedPreferences.getString("pref_sync_frequency_key", getString(R.string.pref_sync_frequency_default_value));
         if (syncFreqKeyValue != null)
             changeSyncFrequency(syncFreqKeyValue);
     }
 
 
-    private void changeSyncFrequency(String sync_frequency_key_value) {
-        switch (sync_frequency_key_value)
+    private void changeSyncFrequency(String pref_sync_frequency_key_value) {
+        switch (pref_sync_frequency_key_value)
         {
             case "15":
-                Log.d(TAG, "changeSyncFrequency: " + sync_frequency_key_value);
                 startWorkAutoBackSync(15);
                 break;
             case "30":
-                Log.d(TAG, "changeSyncFrequency: " + sync_frequency_key_value);
                 startWorkAutoBackSync(30);
                 break;
             case "60":
-                Log.d(TAG, "changeSyncFrequency: " + sync_frequency_key_value);
                 startWorkAutoBackSync(60);
                 break;
             case "120":
-                Log.d(TAG, "changeSyncFrequency: " + sync_frequency_key_value);
                 startWorkAutoBackSync(120);
                 break;
         }
@@ -84,11 +79,10 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case "auto_sync_key":
-                boolean isEnableSync = sharedPreferences.getBoolean("auto_sync_key", false);
-                Log.d(TAG, "Auto background sync: " + isEnableSync);
+            case "pref_auto_sync_key":
+                boolean isEnableSync = sharedPreferences.getBoolean("pref_auto_sync_key", false);
                 if (isEnableSync) {
-                    String syncFreqKeyValue = sharedPreferences.getString("sync_frequency_key", getString(R.string.pref_sync_frequency_default_value));
+                    String syncFreqKeyValue = sharedPreferences.getString("pref_sync_frequency_key", getString(R.string.pref_sync_frequency_default_value));
                     if (syncFreqKeyValue != null)
                         changeSyncFrequency(syncFreqKeyValue);
                 }
@@ -96,7 +90,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
                     WorkManager.getInstance().cancelAllWorkByTag(Contract.REQUEST_SYNC_TAG);
                 }
                 break;
-            case "sync_frequency_key":
+            case "pref_sync_frequency_key":
                 loadSyncFrequencyFromPreference(sharedPreferences);
                 break;
         }

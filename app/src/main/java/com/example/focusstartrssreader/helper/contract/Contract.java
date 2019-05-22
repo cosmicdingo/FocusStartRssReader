@@ -1,5 +1,6 @@
 package com.example.focusstartrssreader.helper.contract;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -98,6 +99,10 @@ public class Contract {
         return intent;
     }
 
+    public static PendingIntent getPendingIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
     // возвращаем OneTimeWorkRequest в MainActivity с помощью которого
     // выполняем обновление новостей канала по свайву
@@ -109,4 +114,6 @@ public class Contract {
                 .setInputData(data)
                 .build();
     }
+
+
 }

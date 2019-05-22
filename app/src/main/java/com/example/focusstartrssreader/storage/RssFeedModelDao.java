@@ -15,23 +15,23 @@ import java.util.List;
 public interface RssFeedModelDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(RssFeedModel rssFeedModel);
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(List<RssFeedModel> rssFeedModels);
 
     @Query("SELECT COUNT(*) FROM RssFeedModel WHERE link = :link")
     int findDuplicateRecordsInDatabase(String link);
 
+    @Query("SELECT COUNT(ID) FROM RssFeedModel")
+    long getNumberNews();
+
     @Query("DELETE FROM RssFeedModel WHERE channelTitle = :chTitle")
     int deleteChannelNewsFeed(String chTitle);
-
-    @Query("SELECT * FROM RssFeedModel")
-    List<RssFeedModel> getAll();
 
     @Query("SELECT title, description, millis FROM RssFeedModel WHERE id = :ID")
     LiveData<SelectedNews> getSelectedNews(long ID);
 
     @Query("SELECT * FROM RssFeedModel WHERE channelTitle = :chTitle ORDER BY millis DESC")
     LiveData<List<RssFeedModel>> getChannelNewsFeed(String chTitle);
+
+    /*@Query("SELECT * FROM RssFeedModel")
+    List<RssFeedModel> getAll();*/
 }

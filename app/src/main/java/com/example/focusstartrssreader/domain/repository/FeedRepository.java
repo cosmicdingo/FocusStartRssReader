@@ -20,7 +20,7 @@ public interface FeedRepository {
 
     // выполняем подключение к сети, парсинг и
     // загружаем данные в бд
-    boolean uploadData(String channelTitle, String urlString);
+    boolean uploadFeed(String channelTitle, String urlString);
 
     /**********************************************************************/
     /*******       методы для работы со списком каналов          ***********/
@@ -42,5 +42,11 @@ public interface FeedRepository {
     LiveData<List<RssFeedModel>> getChannelNewsFeedLiveData(String channelTitle);
 
     LiveData<SelectedNews> getSelectedNews(long ID);
+
+    /**********************************************************************/
+    /*******      метод для подсчета количества новостей в бд   ***********/
+    /**********************************************************************/
+    long getNumberNews();
+
 
 }

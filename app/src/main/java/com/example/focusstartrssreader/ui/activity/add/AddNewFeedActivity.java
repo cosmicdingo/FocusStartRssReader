@@ -38,6 +38,8 @@ public class AddNewFeedActivity extends AppCompatActivity {
 
         initUI();
 
+        doStartFromOutside();
+
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -88,6 +90,7 @@ public class AddNewFeedActivity extends AppCompatActivity {
 
     private void initUI() {
 
+        setTitle(getString(R.string.add_new_feed_activity));
         initToolbar();
 
         rssFeedLinkEditText = findViewById(R.id.rssFeedLinkEditText);
@@ -97,6 +100,18 @@ public class AddNewFeedActivity extends AppCompatActivity {
 
         fetchFeedTitleButton.setOnClickListener(fetchFeedTitleBtnListener);
         cardView.setOnClickListener(cardViewListener);
+    }
+
+    // открываем активити из интернета по нажатию на rss ссылку
+    private void doStartFromOutside() {
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String data = intent.getDataString();
+
+        if (Intent.ACTION_VIEW.equals(action) && data != null) {
+            String rssLink = data;
+            rssFeedLinkEditText.setText(data);
+        }
     }
 
 

@@ -9,7 +9,6 @@ import com.example.focusstartrssreader.domain.model.SelectedNews;
 import com.example.focusstartrssreader.domain.repository.FeedRepository;
 import com.example.focusstartrssreader.network.NetworkConnection;
 import com.example.focusstartrssreader.parser.RssFeedParser;
-import com.example.focusstartrssreader.service.listener.OnFinishListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,11 +60,11 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     @Override
-    public boolean uploadData(String channelTitle, String urlString) {
+    public boolean uploadFeed(String channelTitle, String urlString) {
 
         boolean wasAddFeedInDatabase = false;
 
-        Log.d("RssFeedRepositoryImpl", "on RssFeedRepositoryImpl: uploadData");
+        Log.d("RssFeedRepositoryImpl", "on RssFeedRepositoryImpl: uploadFeed");
         HttpURLConnection httpConn = connection.getHttpConnection(urlString);
 
         try {
@@ -86,15 +85,6 @@ public class FeedRepositoryImpl implements FeedRepository {
 
                 // соединение было установлено, данные добавлены в бд
                 wasAddFeedInDatabase = true;
-
-                /*List<RssFeedModel> rssFeedModelList = feedModelDao.getAll();
-                for (RssFeedModel feedModel : rssFeedModelList) {
-
-                    Log.d("uploadData", "*********************");
-                    Log.d("uploadData", "model.channel_title: " + feedModel.getChannelTitle());
-                    Log.d("uploadData", "model.news_title: " + feedModel.getTitle());
-                    Log.d("uploadData", "*********************");
-                }*/
             }
         }
         catch (IOException ex) {
@@ -114,7 +104,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     public boolean insertChannelInDatabase(String title, String urlString) {
         // если данные лента была была добвлена в бд
         // необходимо добавить канал в бд
-        if (uploadData(title, urlString)) {
+        if (uploadFeed(title, urlString)) {
             // создаем объект канала
             Channel channel = new Channel(title, urlString);
             // записываем канал в бд
@@ -148,7 +138,7 @@ public class FeedRepositoryImpl implements FeedRepository {
     }
 
     public boolean doSync(String title) {
-        return uploadData(title, database.rssFeedChannelDao().getChannelLink(title));
+        return uploadFeed(title, database.rssFeedChannelDao().getChannelLink(title));
     }
 
 
@@ -163,6 +153,11 @@ public class FeedRepositoryImpl implements FeedRepository {
     // используется для отображения описания выбранной новости
     public LiveData<SelectedNews> getSelectedNews(long ID) {
         return database.rssFeedModelDao().getSelectedNews(ID);
+    }
+
+    @Override
+    public long getNumberNews() {
+        return database.rssFeedModelDao().getNumberNews();
     }
 
 
