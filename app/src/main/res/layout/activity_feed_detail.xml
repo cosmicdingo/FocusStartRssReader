@@ -1,45 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.detail.FeedDetailActivity"
-    android:orientation="vertical">
+    tools:context=".ui.activity.detail.FeedDetailActivity">
 
-    <include
-        layout="@layout/toolbar_main"
-        android:id="@+id/toolbar"/>
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/linear_layout_margin">
+        <include
+            layout="@layout/toolbar_main"
+            android:id="@+id/toolbar"/>
 
-        <TextView
-            android:id="@+id/newsTitleTV"
-            android:layout_width="match_parent"
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:padding="@dimen/linear_layout_margin">
 
-        <TextView
-            android:id="@+id/newsDateTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textSize="13sp"
-            android:textStyle="italic" />
+            <TextView
+                android:id="@+id/newsTitleTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/newsDescriptionTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="fill"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/newsDateTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="13sp"
+                android:textStyle="italic" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/newsDescriptionTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="fill"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

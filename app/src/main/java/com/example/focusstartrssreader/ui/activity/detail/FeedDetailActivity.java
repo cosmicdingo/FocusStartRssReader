@@ -2,6 +2,7 @@ package com.example.focusstartrssreader.ui.activity.detail;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.example.focusstartrssreader.helper.contract.Contract;
-import com.example.focusstartrssreader.helper.converter.DateConverter;
+import com.example.focusstartrssreader.util.contract.Contract;
+import com.example.focusstartrssreader.util.converter.DateConverter;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.SelectedNews;
@@ -18,14 +19,15 @@ import com.example.focusstartrssreader.domain.model.SelectedNews;
 
 public class FeedDetailActivity extends AppCompatActivity {
 
-    //public final static String NEWS_ID = "news_id";
-
     private TextView newsTitleTV;
     private TextView newsDateTV;
     private TextView newsDescriptionTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Contract.Settings.USE_DARK_THEME, false) ? R.style.AppThemeDark : R.style.AppThemeLight);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_detail);
 
@@ -47,7 +49,7 @@ public class FeedDetailActivity extends AppCompatActivity {
         newsDateTV = findViewById(R.id.newsDateTV);
         newsDescriptionTV = findViewById(R.id.newsDescriptionTV);
 
-        long ID = getIntent().getLongExtra(Contract.NEWS_ID, 0);
+        long ID = getIntent().getLongExtra(Contract.Main.NEWS_ID, 0);
         LiveData<SelectedNews> selectedNewsLiveData = RssFeedApp.getInstance().getFeedRepository().getSelectedNews(ID);
         selectedNewsLiveData.observe(this, new Observer<SelectedNews>() {
             @Override

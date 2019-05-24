@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.ui.scrollingfabbehavior;
+package com.example.focusstartrssreader.util.scrollingfabbehavior;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;

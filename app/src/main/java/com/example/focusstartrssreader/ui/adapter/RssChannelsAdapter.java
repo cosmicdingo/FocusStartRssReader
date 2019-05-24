@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.ui.adapters;
+package com.example.focusstartrssreader.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;

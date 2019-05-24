@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.example.focusstartrssreader.helper.contract.Contract;
+import com.example.focusstartrssreader.util.contract.Contract;
 import com.example.focusstartrssreader.service.listener.OnFinishListener;
 import com.example.focusstartrssreader.service.runnable.FetchFeedRunnable;
 import com.example.focusstartrssreader.service.runnable.FetchFeedTitleRunnable;
@@ -18,28 +18,28 @@ public class FetchFeedService extends Service {
 
     public int onStartCommand(final Intent intent, int flags, int startId) {
 
-        String urlLink = intent.getStringExtra(Contract.URL_FEED_TAG);
+        String urlLink = intent.getStringExtra(Contract.Feed.URL_FEED_TAG);
         String action = intent.getAction();
         executorService = Executors.newFixedThreadPool(1);
 
         switch (action) {
-            case Contract.FETCH_FEED_TITLE_ACTION:
+            case Contract.Feed.FETCH_FEED_TITLE_ACTION:
 
                 // в broadcast записываем заголовок новостной ленты(заголовок канала)
                 executorService.execute(new FetchFeedTitleRunnable(urlLink, new OnFinishListener() {
                     @Override
                     public void onFinished(Object object) {
-                        sendBroadcast(Contract.getIntent((String) object));
+                        sendBroadcast(Contract.Feed.getIntent((String) object));
                     }
                 }));
                 break;
-            case Contract.FETCH_FEED_ACTION:
+            case Contract.Feed.FETCH_FEED_ACTION:
 
-                String title = intent.getStringExtra(Contract.URL_FEED_TITLE_TAG);
+                String title = intent.getStringExtra(Contract.Feed.URL_FEED_TITLE_TAG);
                 executorService.execute(new FetchFeedRunnable(title, urlLink, new OnFinishListener() {
                     @Override
                     public void onFinished(Object object) {
-                        sendBroadcast(Contract.getIntent((boolean) object));
+                        sendBroadcast(Contract.Feed.getIntent((boolean) object));
                     }
                 }));
                 break;

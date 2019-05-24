@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.Notification;
+package com.example.focusstartrssreader.util.notification;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,7 +7,7 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.helper.contract.Contract;
+import com.example.focusstartrssreader.util.contract.Contract;
 
 public class Notification {
 

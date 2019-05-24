@@ -47,4 +47,5 @@
     <string name="empty_input_field">Enter the link</string>
     <string name="notif_content_text">Click for view</string>
     <string name="notification_title">new article(s)</string>
+    <string name="back_pressed">Press back again to exit</string>
 </resources>

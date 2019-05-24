@@ -3,8 +3,8 @@ package com.example.focusstartrssreader.parser;
 import android.util.Log;
 import android.util.Xml;
 
-import com.example.focusstartrssreader.helper.contract.Contract;
-import com.example.focusstartrssreader.helper.converter.DateConverter;
+import com.example.focusstartrssreader.util.contract.Contract;
+import com.example.focusstartrssreader.util.converter.DateConverter;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
@@ -91,7 +91,7 @@ public class RssFeedParser {
             }
         }
         catch (XmlPullParserException ex) {
-            Log.d(Contract.XML_PULL_PARSER_EXCEPTION, ex.getMessage());
+            Log.d(Contract.Exception.XML_PULL_PARSER_EXCEPTION, ex.getMessage());
         }
         finally {
             inputStream.close();
@@ -101,8 +101,6 @@ public class RssFeedParser {
     }
 
     public String parseFeedTitle(InputStream inputStream) throws IOException{
-
-        //String TAG = "parseFeedTitle";
 
         String feedTitle = null;
 
@@ -123,7 +121,7 @@ public class RssFeedParser {
                 }
             }
         } catch (XmlPullParserException ex) {
-            Log.d(Contract.XML_PULL_PARSER_EXCEPTION, ex.getMessage());
+            Log.d(Contract.Exception.XML_PULL_PARSER_EXCEPTION, ex.getMessage());
         }
         finally {
             inputStream.close();

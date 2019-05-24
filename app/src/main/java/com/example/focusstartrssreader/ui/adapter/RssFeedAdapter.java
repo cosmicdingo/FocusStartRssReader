@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.ui.adapters;
+package com.example.focusstartrssreader.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.focusstartrssreader.helper.converter.DateConverter;
+import com.example.focusstartrssreader.util.converter.DateConverter;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 

@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.helper.converter;
+package com.example.focusstartrssreader.util.converter;
 
 import android.util.Log;
 

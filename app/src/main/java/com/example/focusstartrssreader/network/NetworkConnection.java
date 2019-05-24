@@ -2,7 +2,7 @@ package com.example.focusstartrssreader.network;
 
 import android.util.Log;
 
-import com.example.focusstartrssreader.helper.contract.Contract;
+import com.example.focusstartrssreader.util.contract.Contract;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -30,10 +30,10 @@ public class NetworkConnection {
             httpConn.setRequestMethod("GET");
         }
         catch (MalformedURLException ex) {
-            Log.d(Contract.MALFORMED_URL_EXCEPTION, ex.getMessage());
+            Log.d(Contract.Exception.MALFORMED_URL_EXCEPTION, ex.getMessage());
         }
         catch (IOException ex) {
-            Log.d(Contract.IO_EXCEPTION, ex.getMessage());
+            Log.d(Contract.Exception.IO_EXCEPTION, ex.getMessage());
         }
         return httpConn;
     }

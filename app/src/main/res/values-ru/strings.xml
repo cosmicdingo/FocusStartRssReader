@@ -46,4 +46,5 @@
     <string name="empty_input_field">Введите ссылку на ресурс</string>
     <string name="notif_content_text">Нажмите для просмотра</string>
     <string name="notification_title">новых(ая) новостей(ть)</string>
+    <string name="back_pressed">Press back again to exit</string>
 </resources>

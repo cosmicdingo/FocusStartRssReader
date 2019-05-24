@@ -3,6 +3,7 @@ package com.example.focusstartrssreader.ui.activity.add;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -15,11 +16,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 
-import com.example.focusstartrssreader.helper.contract.Contract;
+import com.example.focusstartrssreader.util.contract.Contract;
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.ui.adapters.Listener;
+import com.example.focusstartrssreader.ui.adapter.Listener;
 import com.example.focusstartrssreader.ui.viewmodel.ChannelViewModel;
-import com.example.focusstartrssreader.ui.adapters.RssChannelsAdapter;
+import com.example.focusstartrssreader.ui.adapter.RssChannelsAdapter;
 import com.example.focusstartrssreader.domain.model.Channel;
 
 import java.util.List;
@@ -31,10 +32,11 @@ public class AddActivity extends AppCompatActivity {
     private RssChannelsAdapter recyclerViewAdapter;
     private ChannelViewModel viewModel;
 
-    // public final static String TAG = "log tag";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Contract.Settings.USE_DARK_THEME, false) ? R.style.AppThemeDark : R.style.AppThemeLight);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
@@ -66,7 +68,7 @@ public class AddActivity extends AppCompatActivity {
         recyclerViewAdapter.setListener(new Listener() {
             @Override
             public void onClick(Object object) {
-                startActivity(Contract.getIntentForMainActivityStart(AddActivity.this, (String) object));
+                startActivity(Contract.Main.getIntent(AddActivity.this, (String) object));
                 finish();
             }
         });

@@ -5,6 +5,10 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,15 +16,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.example.focusstartrssreader.helper.contract.Contract;
+import com.example.focusstartrssreader.util.contract.Contract;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.ui.activity.add.AddActivity;
 import com.example.focusstartrssreader.ui.activity.settings.SettingsActivity;
-import com.example.focusstartrssreader.ui.adapters.Listener;
-import com.example.focusstartrssreader.ui.adapters.RssFeedAdapter;
+import com.example.focusstartrssreader.ui.adapter.Listener;
+import com.example.focusstartrssreader.ui.adapter.RssFeedAdapter;
 import com.example.focusstartrssreader.ui.viewmodel.RssFeedViewModel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
@@ -32,7 +38,9 @@ import androidx.work.WorkManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    String channelTitle;
+    private final static String TAG = "MainActivity";
+    private String channelTitle;
+    private static long backPressed;
 
     private RecyclerView recyclerView;
     private RssFeedAdapter adapter;
@@ -47,8 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        onStartFromOutside();
+        setTheme(PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Contract.Settings.USE_DARK_THEME, false) ? R.style.AppThemeDark : R.style.AppThemeLight);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate");
 
         initUI();
     }
@@ -72,21 +85,33 @@ public class MainActivity extends AppCompatActivity {
         adapter.setListener(new Listener() {
             @Override
             public void onClick(Object object) {
-                startActivity(Contract.getIntent(MainActivity.this, (long) object));
+                startActivity(Contract.Main.getIntent(MainActivity.this, (long) object));
             }
         });
     }
 
+    private void onStartFromOutside() {
+
+        if (Intent.ACTION_VIEW.equals(getIntent().getAction()))
+            (Contract.Main.getTaskStackBuilder(this, getIntent().getData())).startActivities();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume");
         onCreateViewModel();
     }
 
     private void onCreateViewModel() {
 
         Intent intent = getIntent();
-        channelTitle = intent.getStringExtra(Contract.CHANNEL_TITLE);
+        channelTitle = intent.getStringExtra(Contract.Main.CHANNEL_TITLE);
         if (channelTitle == null)
             channelTitle = loadChannelTitle();
 
@@ -103,14 +128,14 @@ public class MainActivity extends AppCompatActivity {
 
     private String loadChannelTitle() {
         preferences = getPreferences(MODE_PRIVATE);
-        return preferences.getString(Contract.CHANNEL_TITLE, "");
+        return preferences.getString(Contract.Main.CHANNEL_TITLE, "");
     }
 
     private void saveChannelTitle() {
         if (channelTitle != null) {
             preferences = getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(Contract.CHANNEL_TITLE, channelTitle);
+            editor.putString(Contract.Main.CHANNEL_TITLE, channelTitle);
             editor.commit();
         }
     }
@@ -118,22 +143,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
         saveChannelTitle();
 
     }
 
-    // метод добавляет элементы действий из файлов
-    // ресурсов меню на панель приложения
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Заполнение меню; элементы действий добавляются на панель приложения
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getBoolean(Contract.Settings.USE_DARK_THEME, false))
+            changeMenuItemColor(menu, Color.WHITE);
+        else changeMenuItemColor(menu, Color.BLACK);
         return super.onCreateOptionsMenu(menu);
     }
 
-    // метод выполняется при выборе действия на панели приложения.
-    // MenuItem представляет элемент на панели действий,
-    // выбранный пользователем
+    private void changeMenuItemColor(Menu menu, int color) {
+        for(int i = 0; i < menu.size(); i++){
+            Drawable drawable = menu.getItem(i).getIcon();
+            if(drawable != null) {
+                drawable.mutate();
+                drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+            }
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -167,4 +203,26 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
+
+    /*@Override
+    public void onBackPressed() {
+        if (backPressed + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+              }
+        else
+            Toast.makeText(getBaseContext(), getString(R.string.back_pressed), Toast.LENGTH_SHORT).show();
+        backPressed = System.currentTimeMillis();
+    }*/
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
 }

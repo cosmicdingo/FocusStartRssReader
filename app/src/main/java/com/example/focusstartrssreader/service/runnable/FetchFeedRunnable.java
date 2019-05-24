@@ -1,15 +1,9 @@
 package com.example.focusstartrssreader.service.runnable;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.service.listener.OnFinishListener;
 
 public class FetchFeedRunnable implements Runnable {
-
-    public final static String TAG = "FetchFeedRunnable";
 
     private String title;
     private String urlLink;
@@ -23,7 +17,6 @@ public class FetchFeedRunnable implements Runnable {
     @Override
     public void run() {
 
-        Log.d(TAG, "FetchFeedRunnable");
         // из application класса получает объект репозитория
         // добавляем канал и новостную ленту канала в бд
         boolean success = RssFeedApp.getInstance().getFeedRepository().insertChannelInDatabase(title, urlLink);

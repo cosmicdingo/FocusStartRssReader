@@ -11,36 +11,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppThemeLight"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activity.add.AddNewFeedActivity"
             android:parentActivityName=".ui.activity.add.AddActivity">
-                <intent-filter>
-                    <action android:name="android.intent.action.VIEW"/>
-
-                    <category android:name="android.intent.category.BROWSABLE"/>
-                    <category android:name="android.intent.category.DEFAULT"/>
-
-                    <data android:scheme="https"/>
-                    <data android:scheme="http"/>
-                    <data android:host="*"/>
-                    <data android:pathPattern=".*xml.*"/>
-                    <data android:pathPattern=".*feed.*"/>
-                    <data android:pathPattern=".*rss.*"/>
-                    <data android:pathPattern=".*news.*"/>
-
-                    <data
-                        android:host="news.google.com"
-                        android:pathPattern="/.*/.*rss"
-                        android:scheme="https" />
-
-                    <data
-                        android:scheme="https"
-                        android:host="news.yandex.ru"
-                        android:pathPattern="/.*.rss" />
-
-                </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.detail.FeedDetailActivity"
@@ -54,12 +29,23 @@
             android:label="@string/settings_activity"
             android:parentActivityName=".ui.activity.main.MainActivity" />
         <activity
-            android:name=".ui.activity.main.MainActivity"
-            android:launchMode="singleTop">
+            android:name=".ui.activity.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="https"/>
+                <data android:scheme="http"/>
+                <data android:host="*"/>
+                <data android:pathPattern=".*xml.*"/>
+                <data android:pathPattern=".*feed.*"/>
+                <data android:pathPattern=".*rss.*"/>
+                <data android:pathPattern=".*rss"/>
+                <data android:pathPattern=".*news.*"/>
             </intent-filter>
         </activity>
 
