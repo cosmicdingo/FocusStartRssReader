@@ -44,7 +44,7 @@ public class Notification {
                 .setContentTitle(notifTitle)
                 .setContentText(context.getString(R.string.notif_content_text))
                 .setSubText("+ " + String.valueOf(numberNewArticles))
-                .setContentIntent(Contract.getPendingIntent(context))
+                .setContentIntent(Contract.getStartFromNotificationIntent(context))
                 .setAutoCancel(true)
                 .build();
     }

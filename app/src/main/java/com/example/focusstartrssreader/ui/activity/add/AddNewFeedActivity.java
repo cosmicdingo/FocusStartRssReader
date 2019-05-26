@@ -1,7 +1,6 @@
 package com.example.focusstartrssreader.ui.activity.add;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,8 +16,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.util.contract.Contract;
 import com.example.focusstartrssreader.R;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AddNewFeedActivity extends AppCompatActivity {
 
@@ -28,9 +31,13 @@ public class AddNewFeedActivity extends AppCompatActivity {
     private CardView cardView;
     private ProgressBar progressBar;
 
-    String rssFeedLink;
-    String feedTitle;
-    BroadcastReceiver receiver;
+    private String rssFeedLink;
+    private String feedTitle;
+
+    private ExecutorService executorService;
+    private MutableLiveData<String> channelTitleLiveData;
+    private MutableLiveData<Boolean> successLiveData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,45 +50,6 @@ public class AddNewFeedActivity extends AppCompatActivity {
         initUI();
 
         onStartFromOutside();
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                progressBar.setVisibility(View.INVISIBLE);
-
-                String action = intent.getAction();
-
-                try {
-                    if (action == null) throw new NullPointerException();
-                    switch (action) {
-                        case Contract.Feed.BROADCAST_FETCH_FEED_TITLE_ACTION:
-                            feedTitle = intent.getStringExtra(Contract.Feed.URL_FEED_TITLE_TAG);
-                            if (feedTitle == null)
-                                Toast.makeText(AddNewFeedActivity.this, getString(R.string.unknown_source), Toast.LENGTH_LONG).show();
-                            else {
-                                cardView.setVisibility(View.VISIBLE);
-                                TextView tv = cardView.findViewById(R.id.tvChannelTitle);
-                                tv.setText(feedTitle);
-                            }
-                            break;
-                        case Contract.Feed.BROADCAST_FETCH_FEED_ACTION:
-                            boolean success = intent.getBooleanExtra(Contract.Feed.FETCH_FEED_SUCCESS_TAG, false);
-                            if(!(success))
-                                Toast.makeText(AddNewFeedActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
-                            else {
-                                Toast.makeText(AddNewFeedActivity.this, getString(R.string.feed_added), Toast.LENGTH_SHORT).show();
-                            }
-                            break;
-                    }
-                } catch (NullPointerException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        };
-
-        // регистрируем (включаем) BroadcastReceiver
-        registerReceiver(receiver, Contract.Feed.getIntentFilter());
     }
 
     private void initToolbar() {
@@ -93,8 +61,6 @@ public class AddNewFeedActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-
-        setTitle(getString(R.string.add_new_feed_activity));
         initToolbar();
 
         rssFeedLinkEditText = findViewById(R.id.rssFeedLinkEditText);
@@ -115,37 +81,68 @@ public class AddNewFeedActivity extends AppCompatActivity {
             rssFeedLinkEditText.setText(data);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        executorService = Executors.newFixedThreadPool(2);
+        channelTitleLiveData = new MutableLiveData<>();
+        successLiveData = new MutableLiveData<>();
+        subscribeOnChannelTitleLiveData();
+        subscribeOnSuccessLiveData();
+    }
 
-    View.OnClickListener fetchFeedTitleBtnListener = new View.OnClickListener() {
+
+    private View.OnClickListener fetchFeedTitleBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             rssFeedLink = rssFeedLinkEditText.getText().toString();
             if(TextUtils.isEmpty(rssFeedLink))
                 Toast.makeText(AddNewFeedActivity.this, getString(R.string.empty_input_field), Toast.LENGTH_SHORT).show();
             else {
                 progressBar.setVisibility(View.VISIBLE);
-                startService(Contract.Feed.getIntent(AddNewFeedActivity.this, rssFeedLink));
+                RssFeedApp.getInstance().getFeedRepository()
+                        .getFeedTitle(rssFeedLink, executorService, channelTitleLiveData);
             }
-
         }
     };
 
-    View.OnClickListener cardViewListener = new View.OnClickListener() {
+    private View.OnClickListener cardViewListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             String tempRssFeedLink = rssFeedLinkEditText.getText().toString();
             if ( TextUtils.isEmpty(tempRssFeedLink) || !(rssFeedLink.equals(tempRssFeedLink)))
-                Toast.makeText(AddNewFeedActivity.this, getString(R.string.unknown_source), Toast.LENGTH_LONG).show();
+                Toast.makeText(AddNewFeedActivity.this, getString(R.string.unknown_source), Toast.LENGTH_SHORT).show();
             else {
                 progressBar.setVisibility(View.VISIBLE);
-                startService(Contract.Feed.getIntent(AddNewFeedActivity.this, feedTitle, rssFeedLink));
+                RssFeedApp.getInstance().getFeedRepository()
+                        .insertChannelInDatabase(feedTitle, rssFeedLink, executorService, successLiveData);
             }
         }
     };
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
+    private void subscribeOnChannelTitleLiveData() {
+        channelTitleLiveData.observe(this, (channelTitle) -> {
+            progressBar.setVisibility(View.INVISIBLE);
+            if (channelTitle == null)
+                Toast.makeText(AddNewFeedActivity.this, getString(R.string.unknown_source), Toast.LENGTH_SHORT).show();
+            else {
+                cardView.setVisibility(View.VISIBLE);
+                TextView tv = cardView.findViewById(R.id.tvChannelTitle);
+                tv.setText(channelTitle);
+                feedTitle = channelTitle;
+            }
+        });
+    }
+
+    private void subscribeOnSuccessLiveData() {
+        successLiveData.observe(this, (success) -> {
+            progressBar.setVisibility(View.INVISIBLE);
+            if((success != null) && !(success))
+                Toast.makeText(AddNewFeedActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(AddNewFeedActivity.this, getString(R.string.feed_added), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

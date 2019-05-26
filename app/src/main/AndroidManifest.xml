@@ -15,6 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.activity.add.AddNewFeedActivity"
+            android:label="@string/add_new_feed_activity"
             android:parentActivityName=".ui.activity.add.AddActivity">
         </activity>
         <activity
@@ -30,13 +31,12 @@
             android:parentActivityName=".ui.activity.main.MainActivity" />
         <activity
             android:name=".ui.activity.main.MainActivity">
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
 
                 <data android:scheme="https"/>
                 <data android:scheme="http"/>
@@ -46,12 +46,24 @@
                 <data android:pathPattern=".*rss.*"/>
                 <data android:pathPattern=".*rss"/>
                 <data android:pathPattern=".*news.*"/>
+
+                <data
+                    android:host="news.google.com"
+                    android:pathPattern="/.*/.*rss"
+                    android:scheme="https" />
+
+                <data
+                    android:scheme="https"
+                    android:host="news.yandex.ru"
+                    android:pathPattern="/.*.rss" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".service.service.FetchFeedService"
-            android:exported="false" />
     </application>
 
 </manifest>

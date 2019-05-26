@@ -11,6 +11,11 @@
     <string name="pref_category_notification">Notification</string>
     <string name="pref_category_theme">Theme</string>
 
+    <string name="pref_auto_sync_key" translatable="false">auto sync</string>
+    <string name="pref_sync_frequency_key" translatable="false">sync frequency</string>
+    <string name="pref_notification_key" translatable="false">notification</string>
+    <string name="pref_theme_key" translatable="false">theme</string>
+
     <string name="pref_title_auto_back_sync">Auto background sync</string>
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">

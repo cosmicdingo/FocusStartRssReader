@@ -1,6 +1,5 @@
 package com.example.focusstartrssreader.ui.activity.main;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.focusstartrssreader.util.contract.Contract;
 import com.example.focusstartrssreader.R;
@@ -32,9 +30,7 @@ import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
 import java.util.List;
 
-import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
         // Реализация метода onClick() интерфейса RssFeedAdapter.Listener
         // запускает AddNewFeedActivity, передавая ей id(id новости в бд) новости,
         // выбранноной юзером
-        adapter.setListener(new Listener() {
+        adapter.setListener(new Listener<Long>() {
             @Override
-            public void onClick(Object object) {
-                startActivity(Contract.Main.getIntent(MainActivity.this, (long) object));
+            public void onClick(Long object) {
+                startActivity(Contract.Main.getStartDetailActivityIntent(MainActivity.this, object));
             }
         });
     }
@@ -93,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     private void onStartFromOutside() {
 
         if (Intent.ACTION_VIEW.equals(getIntent().getAction()))
-            (Contract.Main.getTaskStackBuilder(this, getIntent().getData())).startActivities();
+            startActivity(Contract.Main.getAddFeedActivityIntent(this, getIntent().getData()));
     }
 
     @Override
@@ -136,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             preferences = getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(Contract.Main.CHANNEL_TITLE, channelTitle);
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -186,21 +182,16 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);}
     }
 
-    SwipeRefreshLayout.OnRefreshListener swipeListener = new SwipeRefreshLayout.OnRefreshListener() {
-
+    private SwipeRefreshLayout.OnRefreshListener swipeListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            OneTimeWorkRequest doSyncRequest = Contract.getOneTimeWorkRequest(channelTitle);
-            // запускаем задачу
-            WorkManager.getInstance().enqueue(doSyncRequest);
-
-            LiveData<WorkInfo> status = WorkManager.getInstance().getWorkInfoByIdLiveData(doSyncRequest.getId());
-            status.observe(MainActivity.this, new Observer<WorkInfo>() {
-                @Override
-                public void onChanged(@Nullable WorkInfo workInfo) {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            });
+            Contract.Main.getSwipeRefreshWorkInfo(channelTitle)
+                    .observe(MainActivity.this, new Observer<WorkInfo>() {
+                        @Override
+                        public void onChanged(@Nullable WorkInfo workInfo) {
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    });
         }
     };
 

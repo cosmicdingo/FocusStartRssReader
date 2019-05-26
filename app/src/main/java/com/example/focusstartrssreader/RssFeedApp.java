@@ -7,7 +7,7 @@ import com.example.focusstartrssreader.domain.repository.FeedRepository;
 import com.example.focusstartrssreader.network.NetworkConnection;
 import com.example.focusstartrssreader.parser.RssFeedParser;
 import com.example.focusstartrssreader.storage.FeedRepositoryImpl;
-import com.example.focusstartrssreader.storage.RssFeedDatabase;
+import com.example.focusstartrssreader.storage.db.RssFeedDatabase;
 
 // Application класс предназначен для создания
 // и хранения RssFeedDatabase. Используем один

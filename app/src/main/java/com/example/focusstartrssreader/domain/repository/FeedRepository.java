@@ -1,22 +1,22 @@
 package com.example.focusstartrssreader.domain.repository;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 
 import com.example.focusstartrssreader.domain.model.Channel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 import com.example.focusstartrssreader.domain.model.SelectedNews;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 public interface FeedRepository {
 
 
-    int findDuplicateRecordsInDatabase(String link);
-
     /**********************************************************************/
     /******* методы для работы с сервисом и загрузки данных в бд***********/
     /**********************************************************************/
-    String getFeedTitle(String urlString);
+    void getFeedTitle(String urlString, ExecutorService executor, MutableLiveData<String> liveData);
 
     // выполняем подключение к сети, парсинг и
     // загружаем данные в бд
@@ -26,13 +26,13 @@ public interface FeedRepository {
     /*******       методы для работы со списком каналов          ***********/
     /**********************************************************************/
 
-    boolean insertChannelInDatabase(String title, String urlString);
+    void insertChannelInDatabase(String title, String urlString, ExecutorService executor, MutableLiveData<Boolean> liveData);
 
     List<Channel> getAllChannelList();
 
     LiveData<List<Channel>> getChannelsLiveData();
 
-    int deleteChannel(Channel channel);
+    void deleteChannel(Channel channel);
 
     boolean doSync(String title);
 
@@ -48,5 +48,7 @@ public interface FeedRepository {
     /**********************************************************************/
     long getNumberNews();
 
+
+    int findDuplicateRecordsInDatabase(String link);
 
 }

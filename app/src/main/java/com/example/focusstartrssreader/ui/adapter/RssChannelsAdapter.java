@@ -18,7 +18,7 @@ public class RssChannelsAdapter extends RecyclerView.Adapter<RssChannelsAdapter.
 
     private List<Channel> channels;
 
-    private Listener listener;
+    private Listener<String> listener;
 
     public RssChannelsAdapter() {
 
@@ -27,7 +27,7 @@ public class RssChannelsAdapter extends RecyclerView.Adapter<RssChannelsAdapter.
 
     // Активность использует этот метод для регистрации
     // себя в качестве слушателя
-    public void setListener(Listener listener) {
+    public void setListener(Listener<String> listener) {
         this.listener = listener;
     }
 

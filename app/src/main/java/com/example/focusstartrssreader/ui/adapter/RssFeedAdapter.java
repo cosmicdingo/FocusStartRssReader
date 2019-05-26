@@ -21,7 +21,7 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
 
     private List<RssFeedModel> rssFeedModels;
 
-    private Listener listener;
+    private Listener<Long> listener;
 
     public RssFeedAdapter() {
         this.rssFeedModels = new ArrayList<>();
@@ -42,7 +42,7 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
 
     // Активность использует этот метод для регистрации
     // себя в качестве слушателя
-    public void setListener(Listener listener) {
+    public void setListener(Listener<Long> listener) {
         this.listener = listener;
     }
 
@@ -63,11 +63,11 @@ public class RssFeedAdapter extends RecyclerView.Adapter<RssFeedAdapter.ViewHold
     public void onBindViewHolder(@NonNull RssFeedAdapter.ViewHolder viewHolder, final int i) {
         final CardView cardView = viewHolder.cardView;
 
-        TextView tvTitle = (TextView) cardView.findViewById(R.id.tvTitle);
+        TextView tvTitle = cardView.findViewById(R.id.tvTitle);
         final String title = rssFeedModels.get(i).getTitle();
         tvTitle.setText(title);
 
-        TextView tvPubDate = (TextView) cardView.findViewById(R.id.tvPubDate);
+        TextView tvPubDate = cardView.findViewById(R.id.tvPubDate);
         final String pubDate = DateConverter.timeToDate(rssFeedModels.get(i).getMillis());
         tvPubDate.setText(pubDate);
 

@@ -1,5 +1,5 @@
 package com.example.focusstartrssreader.ui.adapter;
 
-public interface Listener {
-    void onClick(Object object);
+public interface Listener<T> {
+    void onClick(T object);
 }

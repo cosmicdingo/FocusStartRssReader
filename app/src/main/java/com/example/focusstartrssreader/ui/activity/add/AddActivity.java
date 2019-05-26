@@ -28,7 +28,6 @@ import java.util.List;
 public class AddActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ItemTouchHelper touchHelper;
     private RssChannelsAdapter recyclerViewAdapter;
     private ChannelViewModel viewModel;
 
@@ -65,15 +64,15 @@ public class AddActivity extends AppCompatActivity {
         // Реализация метода onClick() интерфейса RssChannelsAdapter.Listener
         // запускает MainActivity, передавая ей заголовок канала,
         // выбранного юзером из списка каналов
-        recyclerViewAdapter.setListener(new Listener() {
+        recyclerViewAdapter.setListener(new Listener<String>() {
             @Override
-            public void onClick(Object object) {
-                startActivity(Contract.Main.getIntent(AddActivity.this, (String) object));
+            public void onClick(String object) {
+                startActivity(Contract.Main.getStartMainActivityIntent(AddActivity.this, object));
                 finish();
             }
         });
 
-        touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
                 return false;
@@ -99,7 +98,7 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
-    protected void onClickAddNewFeed(View view) {
+    public void onClickAddNewFeed(View view) {
         Intent intent = new Intent(this, AddNewFeedActivity.class);
         startActivity(intent);
     }

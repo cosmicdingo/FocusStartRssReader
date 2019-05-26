@@ -1,10 +1,12 @@
-package com.example.focusstartrssreader.storage;
+package com.example.focusstartrssreader.storage.db;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
 import com.example.focusstartrssreader.domain.model.Channel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
+import com.example.focusstartrssreader.storage.dao.RssFeedChannelDao;
+import com.example.focusstartrssreader.storage.dao.RssFeedModelDao;
 
 // В классе описываем абстрактные методы для получения
 // Dao объектов, которые нам понадобятся

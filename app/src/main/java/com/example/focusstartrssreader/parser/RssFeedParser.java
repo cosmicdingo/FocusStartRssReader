@@ -96,7 +96,6 @@ public class RssFeedParser {
         finally {
             inputStream.close();
         }
-
         return items;
     }
 

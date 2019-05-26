@@ -1,6 +1,7 @@
 package com.example.focusstartrssreader.util.scrollingfabbehavior;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -16,7 +17,7 @@ public class ScrollingFABBehavior extends FloatingActionButton.Behavior {
     }
 
     @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton fab, View dependency) {
+    public boolean layoutDependsOn(@NonNull CoordinatorLayout parent, @NonNull FloatingActionButton fab, @NonNull View dependency) {
         return super.layoutDependsOn(parent, fab, dependency) || (dependency instanceof AppBarLayout);
     }
 
@@ -27,7 +28,7 @@ public class ScrollingFABBehavior extends FloatingActionButton.Behavior {
             CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
             int fabBottomMargin = lp.bottomMargin;
             int distanceToScroll = fab.getHeight() + fabBottomMargin;
-            float ratio = (float)dependency.getY()/(float)toolbarHeight;
+            float ratio = dependency.getY() /(float)toolbarHeight;
             fab.setTranslationY(-distanceToScroll * ratio);
         }
         return returnValue;

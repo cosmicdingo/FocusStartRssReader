@@ -15,7 +15,6 @@ public class RssFeedModel {
     private String title;
     private String link;
     private String description;
-    //private String pubDate;
     private long millis;
 
     public RssFeedModel(String channelTitle, String title, String link, String description, long millis) {
@@ -23,7 +22,6 @@ public class RssFeedModel {
         this.title = title;
         this.link = link;
         this.description = description;
-        //this.pubDate = pubDate;
         this.millis = millis;
     }
 
@@ -46,10 +44,6 @@ public class RssFeedModel {
     public String getDescription() {
         return description;
     }
-
-    /*public String getPubDate() {
-        return pubDate;
-    }*/
 
     public String getChannelTitle() {
         return channelTitle;

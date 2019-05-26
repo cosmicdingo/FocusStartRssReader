@@ -6,13 +6,13 @@
         android:title="@string/pref_category_sync">
         <SwitchPreference
             android:defaultValue="false"
-            android:key="pref_auto_sync_key"
+            android:key="@string/pref_auto_sync_key"
             android:title="@string/pref_title_auto_back_sync" />
 
         <ListPreference
             android:entries="@array/pref_sync_frequency_titles"
             android:entryValues="@array/pref_sync_frequency_values"
-            android:key="pref_sync_frequency_key"
+            android:key="@string/pref_sync_frequency_key"
             android:title="@string/pref_title_sync_frequency"
             android:persistent="true"
             android:defaultValue="@string/pref_sync_frequency_default_value"
@@ -23,7 +23,7 @@
         android:title="@string/pref_category_notification">
     <SwitchPreference
         android:defaultValue="true"
-        android:key="pref_notification_key"
+        android:key="@string/pref_notification_key"
         android:title="@string/pref_notification" />
     </PreferenceCategory>
 
@@ -32,42 +32,9 @@
         <ListPreference
             android:entries="@array/pref_theme_titles"
             android:entryValues="@array/pref_theme_values"
-            android:key="pref_theme_key"
+            android:key="@string/pref_theme_key"
             android:title="@string/pref_theme"
             android:persistent="true"
             android:defaultValue="@string/pref_sync_frequency_default_value" />
     </PreferenceCategory>
-
-    <!--
-    <SwitchPreference
-            android:defaultValue="false"
-            android:key="pref_auto_sync_key"
-            android:title="@string/pref_title_auto_back_sync"
-            app:iconSpaceReserved="false"/>
-
-        <ListPreference
-            android:entries="@array/pref_sync_frequency_titles"
-            android:entryValues="@array/pref_sync_frequency_values"
-            android:key="pref_sync_frequency_key"
-            android:title="@string/pref_title_sync_frequency"
-            android:persistent="true"
-            android:defaultValue="@string/pref_sync_frequency_default_value"
-            android:dependency="pref_auto_sync_key"
-            app:iconSpaceReserved="false"/>
-
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="pref_notification_key"
-            android:title="@string/pref_notification"
-            app:iconSpaceReserved="false"/>
-
-        <ListPreference
-            android:entries="@array/pref_theme_titles"
-            android:entryValues="@array/pref_theme_values"
-            android:key="pref_theme_key"
-            android:title="@string/pref_theme"
-            android:persistent="true"
-            android:defaultValue="@string/pref_theme_default_value"
-            app:iconSpaceReserved="false"/>
-            -->
 </PreferenceScreen>

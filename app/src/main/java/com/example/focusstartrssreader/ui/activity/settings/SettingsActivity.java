@@ -1,7 +1,5 @@
 package com.example.focusstartrssreader.ui.activity.settings;
 
-import android.app.TaskStackBuilder;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,11 +10,7 @@ import android.util.Log;
 
 import com.example.focusstartrssreader.util.contract.Contract;
 import com.example.focusstartrssreader.R;
-import com.example.focusstartrssreader.worker.AutoBackgroundSyncWorker;
 
-import java.util.concurrent.TimeUnit;
-
-import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 public class SettingsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -55,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     }
 
     private void loadSyncFrequencyFromPreference(SharedPreferences sharedPreferences) {
-        String syncFreqKeyValue = sharedPreferences.getString("pref_sync_frequency_key", getString(R.string.pref_sync_frequency_default_value));
+        String syncFreqKeyValue = sharedPreferences.getString(Contract.Settings.PREF_SYNC_FREQUENCY_KEY, Contract.Settings.PREF_SYNC_FREQUENCY_VALUE_120);
         if (syncFreqKeyValue != null)
             changeSyncFrequency(syncFreqKeyValue);
     }
@@ -63,33 +57,33 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     private void changeSyncFrequency(String prefSyncFrequencyKeyValue) {
         switch (prefSyncFrequencyKeyValue)
         {
-            case "15":
+            case Contract.Settings.PREF_SYNC_FREQUENCY_VALUE_15:
                 startWorkAutoBackSync(15);
                 break;
-            case "30":
+            case Contract.Settings.PREF_SYNC_FREQUENCY_VALUE_30:
                 startWorkAutoBackSync(30);
                 break;
-            case "60":
+            case Contract.Settings.PREF_SYNC_FREQUENCY_VALUE_60:
                 startWorkAutoBackSync(60);
                 break;
-            case "120":
+            case Contract.Settings.PREF_SYNC_FREQUENCY_VALUE_120:
                 startWorkAutoBackSync(120);
                 break;
         }
     }
     
     private void loadThemeFromPreference(SharedPreferences sharedPreferences) {
-        String themeKeyValue = sharedPreferences.getString("pref_theme_key", getString(R.string.pref_theme_default_value));
+        String themeKeyValue = sharedPreferences.getString(Contract.Settings.PREF_THEME_KEY, Contract.Settings.PREF_THEME_LIGHT_KEY);
 
         if (themeKeyValue != null) {
             switch (themeKeyValue)
             {
-                case "light":
+                case Contract.Settings.PREF_THEME_LIGHT_KEY:
                     sharedPreferences.edit()
                             .putBoolean(Contract.Settings.USE_DARK_THEME, false)
                             .commit();
                     break;
-                case "dark":
+                case Contract.Settings.PREF_THEME_DARK_KEY:
                     sharedPreferences.edit()
                             .putBoolean(Contract.Settings.USE_DARK_THEME, true)
                             .commit();
@@ -106,20 +100,19 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     }
 
     private void startWorkAutoBackSync(long repeatInterval) {
-        WorkManager.getInstance().cancelAllWorkByTag(Contract.Settings.REQUEST_SYNC_TAG);
-        PeriodicWorkRequest backSyncPeriodicWorkRequest = new PeriodicWorkRequest.Builder(AutoBackgroundSyncWorker.class, repeatInterval, TimeUnit.MINUTES)
-                .addTag(Contract.Settings.REQUEST_SYNC_TAG)
-                .build();
-        WorkManager.getInstance().enqueue(backSyncPeriodicWorkRequest);
+        WorkManager.getInstance()
+                .cancelAllWorkByTag(Contract.Settings.REQUEST_SYNC_TAG);
+        WorkManager.getInstance()
+                .enqueue(Contract.Settings.getPeriodicWorkRequest(repeatInterval));
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
-            case "pref_auto_sync_key":
-                boolean isEnableSync = sharedPreferences.getBoolean("pref_auto_sync_key", false);
+            case Contract.Settings.PREF_AUTO_SYNC_KEY:
+                boolean isEnableSync = sharedPreferences.getBoolean(Contract.Settings.PREF_AUTO_SYNC_KEY, false);
                 if (isEnableSync) {
-                    String syncFreqKeyValue = sharedPreferences.getString("pref_sync_frequency_key", getString(R.string.pref_sync_frequency_default_value));
+                    String syncFreqKeyValue = sharedPreferences.getString(Contract.Settings.PREF_SYNC_FREQUENCY_KEY, Contract.Settings.PREF_SYNC_FREQUENCY_VALUE_120);
                     if (syncFreqKeyValue != null)
                         changeSyncFrequency(syncFreqKeyValue);
                 }
@@ -127,10 +120,10 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
                     WorkManager.getInstance().cancelAllWorkByTag(Contract.Settings.REQUEST_SYNC_TAG);
                 }
                 break;
-            case "pref_sync_frequency_key":
+            case Contract.Settings.PREF_SYNC_FREQUENCY_KEY:
                 loadSyncFrequencyFromPreference(sharedPreferences);
                 break;
-            case "pref_theme_key":
+            case Contract.Settings.PREF_THEME_KEY:
                 loadThemeFromPreference(sharedPreferences);
                 break;
         }

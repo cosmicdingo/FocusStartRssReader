@@ -16,8 +16,6 @@ import androidx.work.WorkerParameters;
 
 public class AutoBackgroundSyncWorker extends Worker {
 
-    private SharedPreferences preferences;
-
 
     public AutoBackgroundSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -55,7 +53,7 @@ public class AutoBackgroundSyncWorker extends Worker {
     }
 
     private boolean isShowNotification() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         return preferences.getBoolean("pref_notification_key", false);
     }
 }

@@ -54,12 +54,10 @@ public class FeedDetailActivity extends AppCompatActivity {
         selectedNewsLiveData.observe(this, new Observer<SelectedNews>() {
             @Override
             public void onChanged(@Nullable SelectedNews selectedNews) {
-                try {
+                if (selectedNews != null){
                     newsTitleTV.setText(selectedNews.getTitle());
                     newsDateTV.setText(DateConverter.timeToDate(selectedNews.getMillis()));
                     newsDescriptionTV.setText(selectedNews.getDescription());
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
                 }
             }
         });

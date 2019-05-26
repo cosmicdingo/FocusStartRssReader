@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ChannelViewModel extends ViewModel {
 
-    LiveData<List<Channel>> channelLiveData;
+    private LiveData<List<Channel>> channelLiveData;
 
     public ChannelViewModel() {
         channelLiveData = RssFeedApp.getInstance().getFeedRepository().getChannelsLiveData();
@@ -21,13 +21,6 @@ public class ChannelViewModel extends ViewModel {
     }
 
     public void deleteChannel(final Channel channel) {
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                RssFeedApp.getInstance().getFeedRepository().deleteChannel(channel);
-            }
-        });
-        thread.start();
+        RssFeedApp.getInstance().getFeedRepository().deleteChannel(channel);
     }
 }

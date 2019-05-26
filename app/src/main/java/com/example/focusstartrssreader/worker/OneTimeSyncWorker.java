@@ -6,16 +6,14 @@ import android.util.Log;
 
 import com.example.focusstartrssreader.RssFeedApp;
 
-import java.util.concurrent.TimeUnit;
-
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-public class DoSyncWorker extends Worker {
+public class OneTimeSyncWorker extends Worker {
 
-    static final String TAG = "workmng";
+    private static final String TAG = "workmng";
 
-    public DoSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
+    public OneTimeSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
 

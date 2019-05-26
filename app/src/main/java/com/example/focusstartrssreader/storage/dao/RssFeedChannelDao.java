@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.storage;
+package com.example.focusstartrssreader.storage.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
