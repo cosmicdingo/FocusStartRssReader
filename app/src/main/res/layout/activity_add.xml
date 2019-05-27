@@ -31,6 +31,6 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_24dp"
         android:onClick="onClickAddNewFeed"
-        app:layout_behavior="com.example.focusstartrssreader.util.scrollingfabbehavior.ScrollingFABBehavior"/>
+        app:layout_behavior="com.example.focusstartrssreader.util.scrolling.fab.behavior.ScrollingFABBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

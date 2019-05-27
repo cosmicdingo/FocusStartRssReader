@@ -17,6 +17,9 @@ public interface RssFeedChannelDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertChannel(Channel channel);
 
+    @Query("SELECT COUNT(ID) FROM Channel WHERE channelTitle = :title")
+    int findDuplicateChannelInDatabase(String title);
+
     @Delete
     void delete(Channel channel);
 

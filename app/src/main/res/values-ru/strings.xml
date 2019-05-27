@@ -38,7 +38,7 @@
     </string-array>
 
 
-    <string name="connection_error">Ошибка при подключении</string>
+    <string name="connection_error">Ошибка при подключении или канал уже был добавлен</string>
     <string name="feed_added">Канал добавлен!</string>
 
     <string name="unknown_source">Неизвестный источник</string>

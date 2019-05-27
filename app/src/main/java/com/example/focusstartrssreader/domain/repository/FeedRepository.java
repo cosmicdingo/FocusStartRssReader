@@ -48,7 +48,8 @@ public interface FeedRepository {
     /**********************************************************************/
     long getNumberNews();
 
+    long findDuplicateNewsInDatabase(String link);
 
-    int findDuplicateRecordsInDatabase(String link);
+    int findDuplicateChannelInDatabase(String title);
 
 }

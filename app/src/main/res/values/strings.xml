@@ -45,7 +45,7 @@
     <string name="pref_sync_frequency_default_value" translatable="false">120</string>
     <string name="pref_theme_default_value" translatable="false">light</string>
 
-    <string name="connection_error">Connection error or the write error to the database</string>
+    <string name="connection_error">Connection error or channel has already been added</string>
     <string name="feed_added">Done!</string>
 
     <string name="unknown_source">Unknown source</string>

@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.util.scrollingfabbehavior;
+package com.example.focusstartrssreader.util.scrolling;
 
 import android.content.Context;
 import android.content.res.TypedArray;

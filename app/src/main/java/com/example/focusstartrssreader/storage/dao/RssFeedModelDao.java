@@ -17,8 +17,8 @@ public interface RssFeedModelDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(List<RssFeedModel> rssFeedModels);
 
-    @Query("SELECT COUNT(*) FROM RssFeedModel WHERE link = :link")
-    int findDuplicateRecordsInDatabase(String link);
+    @Query("SELECT COUNT(ID) FROM RssFeedModel WHERE link = :link")
+    long findDuplicateRecordsInDatabase(String link);
 
     @Query("SELECT COUNT(ID) FROM RssFeedModel")
     long getNumberNews();

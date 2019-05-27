@@ -52,18 +52,6 @@ public class AddNewFeedActivity extends AppCompatActivity {
         onStartFromOutside();
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle outState) {
-        super.onRestoreInstanceState(outState);
-        feedTitle = outState.getString(Contract.Feed.CHANNEL_TITLE_VALUE_KEY);
-        rssFeedLink = outState.getString(Contract.Feed.FEED_LINK_VALUE_KEY);
-        if (feedTitle != null && rssFeedLink != null) {
-            cardView.setVisibility(outState.getInt(Contract.Feed.CARDVIEW_VISIBILITY_KEY));
-            TextView tv = cardView.findViewById(R.id.tvChannelTitle);
-            tv.setText(feedTitle);
-        }
-    }
-
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,6 +70,18 @@ public class AddNewFeedActivity extends AppCompatActivity {
 
         fetchFeedTitleButton.setOnClickListener(fetchFeedTitleBtnListener);
         cardView.setOnClickListener(cardViewListener);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle outState) {
+        super.onRestoreInstanceState(outState);
+        feedTitle = outState.getString(Contract.Feed.CHANNEL_TITLE_VALUE_KEY);
+        rssFeedLink = outState.getString(Contract.Feed.FEED_LINK_VALUE_KEY);
+        if (feedTitle != null && rssFeedLink != null) {
+            cardView.setVisibility(outState.getInt(Contract.Feed.CARDVIEW_VISIBILITY_KEY));
+            TextView tv = cardView.findViewById(R.id.tvChannelTitle);
+            tv.setText(feedTitle);
+        }
     }
 
     // открываем активити из интернета по нажатию на rss ссылку

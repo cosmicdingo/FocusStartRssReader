@@ -75,7 +75,7 @@ public class RssFeedParser {
 
                 if (title != null && link != null && description != null && pubDate != null){
                         if (!(RssFeedApp.getInstance().getFeedRepository()
-                                .findDuplicateRecordsInDatabase(link) > 0)) {
+                                .findDuplicateNewsInDatabase(link) > 0)) {
 
                             long millis = DateConverter.dateToTime(pubDate);
                             RssFeedModel item = new RssFeedModel(channelTitle, title, link, description, millis);

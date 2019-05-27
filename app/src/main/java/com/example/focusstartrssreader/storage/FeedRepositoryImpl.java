@@ -110,15 +110,19 @@ public class FeedRepositoryImpl implements FeedRepository {
     public void insertChannelInDatabase(String title, String urlString, ExecutorService executor, MutableLiveData<Boolean> liveData) {
 
         executor.execute(() -> {
-            // если данные лента была была добвлена в бд
-            // необходимо добавить канал в бд
-            if (uploadFeed(title, urlString)) {
-                // создаем объект канала
-                Channel channel = new Channel(title, urlString);
-                // записываем канал в бд
-                database.rssFeedChannelDao().insertChannel(channel);
-                liveData.postValue(true);
-            } else liveData.postValue(false);
+            if (findDuplicateChannelInDatabase(title) > 0)
+                liveData.postValue(false);
+            else {
+                // если данные лента была была добвлена в бд
+                // необходимо добавить канал в бд
+                if (uploadFeed(title, urlString)) {
+                    // создаем объект канала
+                    Channel channel = new Channel(title, urlString);
+                    // записываем канал в бд
+                    database.rssFeedChannelDao().insertChannel(channel);
+                    liveData.postValue(true);
+                } else liveData.postValue(false);
+            }
         });
     }
 
@@ -182,7 +186,12 @@ public class FeedRepositoryImpl implements FeedRepository {
     // возвращает 0 при отсуствии в бд записи со ссылкой link,
     // иначе - количеств совпадений
     @Override
-    public int findDuplicateRecordsInDatabase(String link) {
+    public long findDuplicateNewsInDatabase(String link) {
         return database.rssFeedModelDao().findDuplicateRecordsInDatabase(link);
+    }
+
+    @Override
+    public int findDuplicateChannelInDatabase(String title) {
+        return database.rssFeedChannelDao().findDuplicateChannelInDatabase(title);
     }
 }
