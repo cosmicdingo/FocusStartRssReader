@@ -16,7 +16,7 @@
             android:title="@string/pref_title_sync_frequency"
             android:persistent="true"
             android:defaultValue="@string/pref_sync_frequency_default_value"
-            android:dependency="pref_auto_sync_key" />
+            android:dependency="@string/pref_auto_sync_key" />
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -35,6 +35,6 @@
             android:key="@string/pref_theme_key"
             android:title="@string/pref_theme"
             android:persistent="true"
-            android:defaultValue="@string/pref_sync_frequency_default_value" />
+            android:defaultValue="@string/pref_theme_default_value" />
     </PreferenceCategory>
 </PreferenceScreen>

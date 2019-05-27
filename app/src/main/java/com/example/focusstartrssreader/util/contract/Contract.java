@@ -30,9 +30,10 @@ public class Contract {
         public final static String USE_DARK_THEME = "use_dark_theme";
         public final static String REQUEST_SYNC_TAG = "sync";
 
-        public final static String PREF_AUTO_SYNC_KEY = "pref_auto_sync_key";
-        public final static String PREF_SYNC_FREQUENCY_KEY = "pref_sync_frequency_key";
-        public final static String PREF_THEME_KEY = "pref_theme_key";
+        public final static String PREF_AUTO_SYNC_KEY = "auto sync";
+        public final static String PREF_SYNC_FREQUENCY_KEY = "sync frequency";
+        public final static String PREF_NOTIFICATION_KEY = "notification";
+        public final static String PREF_THEME_KEY = "theme";
 
         public final static String PREF_THEME_LIGHT_KEY = "light";
         public final static String PREF_THEME_DARK_KEY = "dark";
@@ -64,6 +65,10 @@ public class Contract {
     }
 
     public final static class Feed {
+
+        public static final String CARDVIEW_VISIBILITY_KEY = "cardview_visible_key";
+        public static final String CHANNEL_TITLE_VALUE_KEY = "channel_title_value_key";
+        public static final String FEED_LINK_VALUE_KEY = "feed_link_value_key";
 
         public static MutableLiveData<String> getChannelTitleLiveData() {
             return new MutableLiveData<>();

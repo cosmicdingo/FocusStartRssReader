@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import com.example.focusstartrssreader.util.contract.Contract;
 import com.example.focusstartrssreader.util.notification.Notification;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.Channel;
@@ -54,6 +55,6 @@ public class AutoBackgroundSyncWorker extends Worker {
 
     private boolean isShowNotification() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        return preferences.getBoolean("pref_notification_key", false);
+        return preferences.getBoolean(Contract.Settings.PREF_NOTIFICATION_KEY, false);
     }
 }

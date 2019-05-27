@@ -19,7 +19,7 @@ import android.view.View;
 import com.example.focusstartrssreader.util.contract.Contract;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.ui.adapter.Listener;
-import com.example.focusstartrssreader.ui.viewmodel.ChannelViewModel;
+import com.example.focusstartrssreader.ui.viewmodel.channel.ChannelViewModel;
 import com.example.focusstartrssreader.ui.adapter.RssChannelsAdapter;
 import com.example.focusstartrssreader.domain.model.Channel;
 

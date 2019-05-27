@@ -37,7 +37,6 @@
         <item>dark</item>
     </string-array>
 
-    <string name="pref_theme_default_value">Светлая</string>
 
     <string name="connection_error">Ошибка при подключении</string>
     <string name="feed_added">Канал добавлен!</string>

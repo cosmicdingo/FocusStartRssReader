@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.ui.viewmodel;
+package com.example.focusstartrssreader.ui.viewmodel.channel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;

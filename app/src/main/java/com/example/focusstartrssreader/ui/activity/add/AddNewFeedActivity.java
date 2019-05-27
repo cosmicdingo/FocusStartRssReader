@@ -52,6 +52,18 @@ public class AddNewFeedActivity extends AppCompatActivity {
         onStartFromOutside();
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle outState) {
+        super.onRestoreInstanceState(outState);
+        feedTitle = outState.getString(Contract.Feed.CHANNEL_TITLE_VALUE_KEY);
+        rssFeedLink = outState.getString(Contract.Feed.FEED_LINK_VALUE_KEY);
+        if (feedTitle != null && rssFeedLink != null) {
+            cardView.setVisibility(outState.getInt(Contract.Feed.CARDVIEW_VISIBILITY_KEY));
+            TextView tv = cardView.findViewById(R.id.tvChannelTitle);
+            tv.setText(feedTitle);
+        }
+    }
+
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,18 +96,18 @@ public class AddNewFeedActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        executorService = Executors.newFixedThreadPool(2);
+        executorService = Executors.newFixedThreadPool(1);
         channelTitleLiveData = new MutableLiveData<>();
         successLiveData = new MutableLiveData<>();
-        subscribeOnChannelTitleLiveData();
-        subscribeOnSuccessLiveData();
+        onSubscribeToChannelTitleLiveData();
+        onSubscribeToSuccessLiveData();
     }
 
 
     private View.OnClickListener fetchFeedTitleBtnListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            cardView.setVisibility(View.INVISIBLE);
             rssFeedLink = rssFeedLinkEditText.getText().toString();
             if(TextUtils.isEmpty(rssFeedLink))
                 Toast.makeText(AddNewFeedActivity.this, getString(R.string.empty_input_field), Toast.LENGTH_SHORT).show();
@@ -121,7 +133,7 @@ public class AddNewFeedActivity extends AppCompatActivity {
         }
     };
 
-    private void subscribeOnChannelTitleLiveData() {
+    private void onSubscribeToChannelTitleLiveData() {
         channelTitleLiveData.observe(this, (channelTitle) -> {
             progressBar.setVisibility(View.INVISIBLE);
             if (channelTitle == null)
@@ -135,7 +147,7 @@ public class AddNewFeedActivity extends AppCompatActivity {
         });
     }
 
-    private void subscribeOnSuccessLiveData() {
+    private void onSubscribeToSuccessLiveData() {
         successLiveData.observe(this, (success) -> {
             progressBar.setVisibility(View.INVISIBLE);
             if((success != null) && !(success))
@@ -144,5 +156,13 @@ public class AddNewFeedActivity extends AppCompatActivity {
                 Toast.makeText(AddNewFeedActivity.this, getString(R.string.feed_added), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(Contract.Feed.CHANNEL_TITLE_VALUE_KEY, feedTitle);
+        outState.putString(Contract.Feed.FEED_LINK_VALUE_KEY, rssFeedLink);
+        outState.putInt(Contract.Feed.CARDVIEW_VISIBILITY_KEY, cardView.getVisibility());
     }
 }

@@ -25,7 +25,7 @@ import com.example.focusstartrssreader.ui.activity.add.AddActivity;
 import com.example.focusstartrssreader.ui.activity.settings.SettingsActivity;
 import com.example.focusstartrssreader.ui.adapter.Listener;
 import com.example.focusstartrssreader.ui.adapter.RssFeedAdapter;
-import com.example.focusstartrssreader.ui.viewmodel.RssFeedViewModel;
+import com.example.focusstartrssreader.ui.viewmodel.feed.RssFeedViewModel;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 
 import java.util.List;
