@@ -15,11 +15,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.focusstartrssreader.util.contract.Contract;
+import com.example.focusstartrssreader.tools.contract.Contract;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.ui.activity.add.AddActivity;
 import com.example.focusstartrssreader.ui.activity.settings.SettingsActivity;
@@ -34,9 +33,7 @@ import androidx.work.WorkInfo;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String TAG = "MainActivity";
     private String channelTitle;
-    private static long backPressed;
 
     private RecyclerView recyclerView;
     private RssFeedAdapter adapter;
@@ -57,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 .getBoolean(Contract.Settings.USE_DARK_THEME, false) ? R.style.AppThemeDark : R.style.AppThemeLight);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "onCreate");
 
         initUI();
     }
@@ -87,20 +83,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onStartFromOutside() {
-
         if (Intent.ACTION_VIEW.equals(getIntent().getAction()))
             startActivity(Contract.Main.getAddFeedActivityIntent(this, getIntent().getData()));
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
-    @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
         onCreateViewModel();
     }
 
@@ -139,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause");
         saveChannelTitle();
 
     }
@@ -194,26 +182,4 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
     };
-
-    /*@Override
-    public void onBackPressed() {
-        if (backPressed + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed();
-              }
-        else
-            Toast.makeText(getBaseContext(), getString(R.string.back_pressed), Toast.LENGTH_SHORT).show();
-        backPressed = System.currentTimeMillis();
-    }*/
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy");
-    }
 }

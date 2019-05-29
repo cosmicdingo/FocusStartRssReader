@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.example.focusstartrssreader.ui.viewmodel.detail.SelectedNewsDetailFactory;
 import com.example.focusstartrssreader.ui.viewmodel.detail.SelectedNewsDetailViewModel;
-import com.example.focusstartrssreader.util.contract.Contract;
-import com.example.focusstartrssreader.util.converter.DateConverter;
+import com.example.focusstartrssreader.tools.contract.Contract;
+import com.example.focusstartrssreader.tools.converter.DateConverter;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.domain.model.SelectedNews;
 

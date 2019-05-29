@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.focusstartrssreader.RssFeedApp;
-import com.example.focusstartrssreader.util.contract.Contract;
+import com.example.focusstartrssreader.tools.contract.Contract;
 import com.example.focusstartrssreader.R;
 
 import java.util.concurrent.ExecutorService;

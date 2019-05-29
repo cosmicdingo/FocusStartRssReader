@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
-import com.example.focusstartrssreader.util.contract.Contract;
-import com.example.focusstartrssreader.util.notification.Notification;
+import com.example.focusstartrssreader.tools.contract.Contract;
+import com.example.focusstartrssreader.tools.notification.Notification;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.Channel;
 

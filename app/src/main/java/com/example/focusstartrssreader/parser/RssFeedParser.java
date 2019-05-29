@@ -3,8 +3,8 @@ package com.example.focusstartrssreader.parser;
 import android.util.Log;
 import android.util.Xml;
 
-import com.example.focusstartrssreader.util.contract.Contract;
-import com.example.focusstartrssreader.util.converter.DateConverter;
+import com.example.focusstartrssreader.tools.contract.Contract;
+import com.example.focusstartrssreader.tools.converter.DateConverter;
 import com.example.focusstartrssreader.RssFeedApp;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 

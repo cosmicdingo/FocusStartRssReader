@@ -8,14 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.example.focusstartrssreader.util.contract.Contract;
+import com.example.focusstartrssreader.tools.contract.Contract;
 import com.example.focusstartrssreader.R;
 
 import androidx.work.WorkManager;
 
 public class SettingsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private final static String TAG = "SettingsActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(PreferenceManager
@@ -24,17 +23,11 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Log.d(TAG, "onCreate");
         initToolbar();
 
         setupSharedPreference();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart");
-    }
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,7 +88,6 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
 
     private void changeTheme() {
         (Contract.Settings.getTaskStackBuilder(this)).startActivities();
-        //startActivity(new Intent(this, SettingsActivity.class));
         finish();
     }
 
@@ -130,14 +122,8 @@ public class SettingsActivity extends AppCompatActivity implements SharedPrefere
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop");
-    }
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy: ");
         android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(this)
                 .unregisterOnSharedPreferenceChangeListener(this);
     }

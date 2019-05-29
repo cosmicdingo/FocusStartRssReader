@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.util.scrolling.fab.behavior;
+package com.example.focusstartrssreader.tools.scrolling.fab.behavior;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,7 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.example.focusstartrssreader.util.scrolling.Utils;
+import com.example.focusstartrssreader.tools.scrolling.Utils;
 
 public class ScrollingFABBehavior extends FloatingActionButton.Behavior {
     private int toolbarHeight;

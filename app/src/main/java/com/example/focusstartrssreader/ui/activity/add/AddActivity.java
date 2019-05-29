@@ -16,7 +16,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 
-import com.example.focusstartrssreader.util.contract.Contract;
+import com.example.focusstartrssreader.tools.contract.Contract;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.ui.adapter.Listener;
 import com.example.focusstartrssreader.ui.viewmodel.channel.ChannelViewModel;

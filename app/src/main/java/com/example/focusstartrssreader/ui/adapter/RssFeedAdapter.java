@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.focusstartrssreader.util.converter.DateConverter;
+import com.example.focusstartrssreader.tools.converter.DateConverter;
 import com.example.focusstartrssreader.R;
 import com.example.focusstartrssreader.domain.model.RssFeedModel;
 

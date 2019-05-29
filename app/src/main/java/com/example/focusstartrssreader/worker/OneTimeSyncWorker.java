@@ -11,8 +11,6 @@ import androidx.work.WorkerParameters;
 
 public class OneTimeSyncWorker extends Worker {
 
-    private static final String TAG = "workmng";
-
     public OneTimeSyncWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
@@ -21,14 +19,11 @@ public class OneTimeSyncWorker extends Worker {
     @Override
     public Result doWork() {
 
-        Log.d(TAG, "doWork: start");
         String channelTitle = getInputData().getString("channel_title");
         // если обновление прошло успешно
         if (RssFeedApp.getInstance().getFeedRepository().doSync(channelTitle)) {
-            Log.d(TAG, "doWork: end. Success");
             return Result.success();
         } else {
-            Log.d(TAG, "doWork: end. Failure");
             return Result.failure();
         }
     }

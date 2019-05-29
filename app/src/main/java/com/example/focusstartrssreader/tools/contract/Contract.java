@@ -1,4 +1,4 @@
-package com.example.focusstartrssreader.util.contract;
+package com.example.focusstartrssreader.tools.contract;
 
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -69,11 +69,6 @@ public class Contract {
         public static final String CARDVIEW_VISIBILITY_KEY = "cardview_visible_key";
         public static final String CHANNEL_TITLE_VALUE_KEY = "channel_title_value_key";
         public static final String FEED_LINK_VALUE_KEY = "feed_link_value_key";
-
-        public static MutableLiveData<String> getChannelTitleLiveData() {
-            return new MutableLiveData<>();
-        }
-
     }
 
     public final static class Main {
